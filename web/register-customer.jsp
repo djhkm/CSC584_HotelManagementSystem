@@ -13,6 +13,8 @@
     </head>
     <body>
         <h1>Register (Customer)</h1>
+        <a href="index.jsp">Back</a>
+        <br><br>
         <form action="RegisterCustomerServlet" method="POST">
             <table border="0">
                 <tbody>
@@ -33,19 +35,19 @@
                     <tr>
                         <td>Name: </td>
                         <td>
-                            <input type="text" name="customer_name">
+                            <input type="text" name="customer_name" required>
                         </td>
                     </tr>
                     <tr>
                         <td>Email: </td>
                         <td>
-                            <input type="email" name="customer_email">
+                            <input type="email" name="customer_email" required>
                         </td>
                     </tr>
                     <tr>
                         <td>Phone Number: </td>
                         <td>
-                            <input type="text" name="customer_phoneNumber" placeholder="01234567890">
+                            <input type="tel" name="customer_phoneNumber" placeholder="01234567890" required>
                         </td>
                     </tr>
                     <tr>
@@ -54,13 +56,13 @@
                     <tr>
                         <td>Username: </td>
                         <td>
-                            <input type="text" name="customer_username">
+                            <input type="text" name="customer_username" required>
                         </td>
                     </tr>
                     <tr>
                         <td>Password: </td>
                         <td>
-                            <input type="password" name="customer_password">
+                            <input type="password" name="customer_password" required>
                         </td>
                     </tr>
                     <tr>

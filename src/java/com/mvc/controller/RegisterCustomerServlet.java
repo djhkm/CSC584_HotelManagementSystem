@@ -5,8 +5,10 @@
  */
 package com.mvc.controller;
 
-import com.mvc.bean.RegisterCustomerBean;
-import com.mvc.dao.RegisterCustomerDAO;
+import com.mvc.bean.CustomerBean;
+import com.mvc.bean.UsersBean;
+import com.mvc.dao.CustomerDAO;
+import com.mvc.dao.UsersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -20,59 +22,18 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RegisterCustomerServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-//    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet RegisterCustomerServlet</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet RegisterCustomerServlet at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
-//    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
+        
+        // get form data
         String customer_honorific = request.getParameter("customer_honorific");
         String customer_name = request.getParameter("customer_name");
         String customer_email = request.getParameter("customer_email");
@@ -80,29 +41,53 @@ public class RegisterCustomerServlet extends HttpServlet {
         String customer_username = request.getParameter("customer_username");
         String customer_password = request.getParameter("customer_password");
         
-        RegisterCustomerBean registerCustomer = new RegisterCustomerBean(customer_honorific, customer_name, customer_email, customer_phoneNumber, customer_username, customer_password);
+        // initialize
+        CustomerBean customer = new CustomerBean();
+        UsersBean users = new UsersBean();
         
-        RegisterCustomerDAO registerCustomerDAO = new RegisterCustomerDAO();
+        CustomerDAO customerDAO = new CustomerDAO();
+        UsersDAO userDAO = new UsersDAO();
         
-        String status = registerCustomerDAO.registerCustomerData(registerCustomer);
-        if (status.equals("Registration success")) {
-            request.setAttribute("successMessage", status);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+        // check if theres existing username
+        String statusA = userDAO.findExistingUsername(customer_username);
+        if (statusA.equals("Username already taken")) {
+            request.setAttribute("errMessage", "Registration failed, "+statusA);
+            request.getRequestDispatcher("register-customer.jsp").forward(request, response);
         }
         else {
-            request.setAttribute("errMessage", status);
-            request.getRequestDispatcher("register-customer.jsp").forward(request, response);
+            // add new user data
+            users.setUsername(customer_username);
+            users.setPassword(customer_password);
+            users.setUser_type(2);
+            String statusB = userDAO.addUser(users);
+            if (statusB.equals("Add user success")) {
+                int user_id = userDAO.findUserId(customer_username);
+
+                // add new customer data
+                customer.setCustomer_honorific(customer_honorific);
+                customer.setCustomer_name(customer_name);
+                customer.setCustomer_email(customer_email);
+                customer.setCustomer_phoneNumber(customer_phoneNumber);
+                customer.setCustomer_user_id(user_id);
+                String statusC = customerDAO.registerCustomerData(customer);
+                if (statusC.equals("Registration success")) {
+                    request.setAttribute("successMessage", statusC);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                }
+                else {
+                    request.setAttribute("errMessage", statusC);
+                    request.getRequestDispatcher("register-customer.jsp").forward(request, response);
+                }
+            }
+            else {
+                request.setAttribute("errMessage", statusB);
+                request.getRequestDispatcher("register-customer.jsp").forward(request, response);
+            }
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "For customer registration form";
     }// </editor-fold>
-
 }

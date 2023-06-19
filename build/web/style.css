@@ -1,0 +1,29 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 19, 2023, 8:01:25 PM
+    Author     : haziq
+*/
+
+html, body{   /* remove margin to make page fill up entire height and width */
+    margin: 0px; 
+}
+
+.topNav{
+    background:black; 
+    color: white; 
+    padding:5px
+}
+
+.circleButton{
+    display:inline-block; 
+    background:white;
+    padding: 5px;
+    border-radius: 20px;
+    border: 1px solid black;
+    color: black;
+}
+
