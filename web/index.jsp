@@ -14,11 +14,46 @@ password="app"/>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Homepage (Customer)</title>
+        <title>Hotel Booking</title>
+        <link rel="stylesheet" href="./style.css"/>
     </head>
     <body>
-        <h1>Homepage (Customer)</h1>
-        <div><a href="register-customer.jsp">Register</a></div>
-        <div><a href="login-customer.jsp">Login</a></div>
+        <div width="100%" class="topNav">
+            <div style="width:90%; display:inline-block" align="center">
+                asd
+            </div>
+            <a href="login.jsp">
+                <div class="circleButton">
+                    LOGIN / SIGN UP
+                </div>
+            </a>
+        </div>
+        <div style="background:lightgray; padding: 20px; text-align:center">
+            <form action="#">
+                <table style="width:90%">
+                    <tr>
+                        <th>Dates</th>
+                        <th>Rooms & Guests</th>
+                    </tr>
+                    <tr>
+                        <td style="border-right: solid black 1px;">
+                            <input type="date" name="dateStart"/> &rarr;
+                            <input type="date" name="dateEnd"/>
+                        </td>
+                        <td>
+                            <input style="width:20px" type="number" name="roomCount" value="1"/> Room,
+                            <input style="width:20px" type="number" name="guestCount" value="1"/> Adult
+                        </td>
+                        <td rowspan="2">
+                            <a href="reservation.jsp">
+                                <div class="circleButton">
+                                    VIEW RATES
+                                </div>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
     </body>
 </html>
