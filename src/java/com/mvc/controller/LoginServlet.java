@@ -5,8 +5,8 @@
  */
 package com.mvc.controller;
 
-import com.mvc.bean.CustomerBean;
-import com.mvc.bean.UsersBean;
+import com.mvc.bean.Customer;
+import com.mvc.bean.Users;
 import com.mvc.dao.CustomerDAO;
 import com.mvc.dao.UsersDAO;
 import java.io.IOException;
@@ -39,8 +39,8 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("login_password");
         
         // initialize
-        CustomerBean customer = new CustomerBean();
-        UsersBean users = new UsersBean();
+        Customer customer = new Customer();
+        Users users = new Users();
         
         CustomerDAO customerDAO = new CustomerDAO();
         UsersDAO userDAO = new UsersDAO();

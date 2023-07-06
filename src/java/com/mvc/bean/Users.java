@@ -9,19 +9,19 @@ package com.mvc.bean;
  *
  * @author hakimchi
  */
-public class UsersBean {
+public class Users {
     private int user_id; 
     private String username;
-    private String password;
+    private String user_password;
     private int user_type;
 
-    public UsersBean() {
+    public Users() {
     }
 
-    public UsersBean(int user_id, String username, String password, int user_type) {
+    public Users(int user_id, String username, String password, int user_type) {
         this.user_id = user_id;
         this.username = username;
-        this.password = password;
+        this.user_password = password;
         this.user_type = user_type;
     }
 
@@ -42,11 +42,11 @@ public class UsersBean {
     }
 
     public String getPassword() {
-        return password;
+        return user_password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.user_password = password;
     }
 
     public int getUser_type() {

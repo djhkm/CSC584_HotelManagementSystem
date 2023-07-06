@@ -4,7 +4,7 @@
     Author     : hakimchi
 --%>
 <%@page import="com.mvc.dao.CustomerDAO"%>
-<%@page import="com.mvc.bean.CustomerBean"%>
+<%@page import="com.mvc.bean.Customer"%>
 <%
     int user_id = 0;
     if (session.getAttribute("user_id") != null) {
@@ -14,10 +14,6 @@
 %>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<sql:setDataSource var="myDatasource" 
-driver="org.apache.derby.jdbc.ClientDriver"
-url="jdbc:derby://localhost:1527/CSC584_hotelManagementSystem" user="app" 
-password="app"/>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -47,7 +43,7 @@ password="app"/>
                     <%
                         } else {
                         CustomerDAO customerDAO = new CustomerDAO();
-                        CustomerBean customer = customerDAO.getCustomerDataUsingUserId(user_id);
+                        Customer customer = customerDAO.getCustomerDataUsingUserId(user_id);
                     %>
                     <div class="fs-5 mb-1 d-inline">
                         <%=customer.getCustomer_name()%>
@@ -68,7 +64,7 @@ password="app"/>
             </div>
         </div>
         <div class="container-fluid text-center" style="background:lightgray; padding: 20px;">
-            <form action="#">
+            <form action="reservation.jsp" method="GET">
                 <div class="row justify-content-center mb-2">
                     <div class="col-md-5">Dates</div>
                     <div class="col-md-4">Rooms & Guests</div>
@@ -77,7 +73,7 @@ password="app"/>
                     <div class="col-md-2">
                         <input class="form-control"  type="date" name="dateStart"/>
                     </div>
-                    <div class="col-md-auto">
+                    <div class="col-md-auto d-flex align-items-center">
                         &rarr;
                     </div>
                     <div class="col-md-2 border-right">
@@ -86,21 +82,17 @@ password="app"/>
                     <div class="col-md-1">
                         <input class="form-control" style="//width:40px" type="number" name="roomCount" value="1"/>
                     </div>
-                    <div class="col-md-auto">
+                    <div class="col-md-auto d-flex align-items-center">
                         Room,
                     </div>
                     <div class="col-md-1">
                         <input class="form-control" style="//width:40px" type="number" name="guestCount" value="1"/> 
                     </div>
-                    <div class="col-md-auto">
+                    <div class="col-md-auto d-flex align-items-center">
                         Pax
                     </div>
                     <div class="col-md-1">
-                        <a href="reservation.jsp">
-                            <div class="btn btn-secondary">
-                                VIEW RATES
-                            </div>
-                        </a>
+                        <button class="btn btn-secondary" type="submit">VIEW RATES</button>
                     </div>
                 </div>
             </form>

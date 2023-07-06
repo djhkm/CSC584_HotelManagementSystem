@@ -5,8 +5,8 @@
  */
 package com.mvc.dao;
 
-import com.mvc.bean.CustomerBean;
-import com.mvc.bean.UsersBean;
+import com.mvc.bean.Customer;
+import com.mvc.bean.Users;
 import com.mvc.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -69,7 +69,7 @@ public class UsersDAO {
     }
     
     // add new user data
-    public String addUser (UsersBean users) {
+    public String addUser (Users users) {
         String username = users.getUsername();
         String password = users.getPassword();
         int user_type = users.getUser_type();
@@ -95,7 +95,7 @@ public class UsersDAO {
     }
     
     // validate username and password
-    public String authenticateUser(UsersBean users) {
+    public String authenticateUser(Users users) {
         String username = users.getUsername();
         String password = users.getPassword();
         
