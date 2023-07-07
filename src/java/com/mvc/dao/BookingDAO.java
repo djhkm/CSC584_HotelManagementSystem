@@ -8,11 +8,14 @@ package com.mvc.dao;
 import com.mvc.bean.Booking;
 import com.mvc.util.DBConnection;
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -94,5 +97,43 @@ public class BookingDAO {
             }
         } while (proceed == 1);
         return compiledIN;
+    }
+    
+    public List<Booking> getAllBooking() {
+        List<Booking> bookings = new ArrayList();
+        
+        try {
+            Statement s;
+            ResultSet rs;
+            
+            String query = "SELECT * FROM BOOKING";
+            
+            s = conn.createStatement();
+            rs = s.executeQuery(query);
+            
+            SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd / MM / yyyy");
+            
+            while (rs.next()) {
+                int booking_id = rs.getInt("BOOKING_ID");
+                String invoice_number = rs.getString("INVOICE_NUMBER");
+                String booking_date = formatter.format(parser.parse(rs.getString("BOOKING_DATE")));
+                int booking_pax = rs.getInt("BOOKING_PAX");
+                int booking_dayofstay = rs.getInt("BOOKING_DAYSOFSTAY");
+                String booking_checkindate = formatter.format(parser.parse(rs.getString("BOOKING_CHECKINDATE")));
+                String booking_checkoutdate = formatter.format(parser.parse(rs.getString("BOOKING_CHECKOUTDATE")));
+                double booking_totalfee = rs.getDouble("BOOKING_TOTALFEE");
+                int booking_customer_id = rs.getInt("CUSTOMER_ID");
+                int booking_room_id = rs.getInt("ROOM_ID");
+                
+                Booking b = new Booking(booking_id, invoice_number, booking_date, booking_pax, booking_dayofstay, booking_checkindate, booking_checkoutdate, booking_totalfee, booking_customer_id, booking_room_id);
+                bookings.add(b);
+            }
+            //conn.close();
+            return bookings;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

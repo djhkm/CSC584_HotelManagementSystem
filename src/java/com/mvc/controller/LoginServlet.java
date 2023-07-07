@@ -52,15 +52,15 @@ public class LoginServlet extends HttpServlet {
             String statusA = userDAO.authenticateUser(users);
             if (statusA.equals("1")) {
                 int user_id = userDAO.findUserId(username);
-    //            customer = customerDAO.getCustomerDataUsingUserId(user_id);
+                users = new Users(user_id, username, password, Integer.parseInt(statusA));
                 HttpSession session = request.getSession();
-                session.setAttribute("user_id",user_id);
+                session.setAttribute("user", users);
                 request.setAttribute("successMessage", statusA);
                 request.getRequestDispatcher("dashboard.jsp").forward(request, response);
             }
             else if (statusA.equals("2")) {
                 int user_id = userDAO.findUserId(username);
-    //            customer = customerDAO.getCustomerDataUsingUserId(user_id);
+                users = new Users(user_id, username, password, Integer.parseInt(statusA));
                 HttpSession session = request.getSession();
                 session.setAttribute("user", users);
                 request.setAttribute("successMessage", statusA);
@@ -69,9 +69,8 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("errMessage", statusA);
                 System.out.println("login failed, sending err " + request.getAttribute("errMessage"));
             }
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         } else {
-            //request.getRequestDispatcher("/register-customer.jsp").forward(request, response);
             response.sendRedirect("register-customer.jsp");
         }
     }
