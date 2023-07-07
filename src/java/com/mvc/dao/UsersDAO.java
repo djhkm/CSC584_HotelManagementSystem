@@ -18,6 +18,9 @@ import java.sql.Statement;
  * @author hakimchi
  */
 public class UsersDAO {
+
+    public UsersDAO() {
+    }
     
     Connection conn = DBConnection.createConnection();
     
@@ -26,7 +29,6 @@ public class UsersDAO {
         
         try {            
             Statement s;
-            PreparedStatement ps;
             ResultSet rs;
             
             String query = "SELECT USERNAME FROM USERS WHERE USERNAME = '" + username + "'";
@@ -49,7 +51,6 @@ public class UsersDAO {
         
         try {
             Statement s;
-            PreparedStatement ps;
             ResultSet rs;
             
             String query = "SELECT USER_ID FROM USERS WHERE USERNAME = '" + username + "'";
@@ -75,9 +76,7 @@ public class UsersDAO {
         int user_type = users.getUser_type();
         
         try {
-            Statement s;
             PreparedStatement ps;
-            ResultSet rs;
             
             String query = "INSERT INTO USERS (USERNAME, USER_PASSWORD, USER_TYPE) VALUES (?, ?, ?)";
             
@@ -101,7 +100,6 @@ public class UsersDAO {
         
         try {
             Statement s;
-            PreparedStatement ps;
             ResultSet rs;
             
             String query = "SELECT * FROM USERS WHERE USERNAME = '" + username + "' AND USER_PASSWORD = '" + password + "'";
@@ -110,8 +108,9 @@ public class UsersDAO {
             rs = s.executeQuery(query);
             
             if (rs.next()) {
+                String user_type = Integer.toString(rs.getInt("USER_TYPE"));
                 //conn.close();
-                return "Authentication success";
+                return user_type;
             }
         } catch (Exception e) {
             e.printStackTrace();

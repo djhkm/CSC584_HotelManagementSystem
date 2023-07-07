@@ -29,9 +29,7 @@ public class CustomerDAO {
         int customer_user_id = customer.getCustomer_user_id();
         
         try {
-            Statement s;
             PreparedStatement ps;
-            ResultSet rs;
             
             String query = "INSERT INTO CUSTOMER (CUSTOMER_HONORIFIC, CUSTOMER_NAME, CUSTOMER_EMAIL, CUSTOMER_PHONENUMBER, USER_ID) VALUES (?, ?, ?, ?, ?)";
             
@@ -50,11 +48,10 @@ public class CustomerDAO {
         return "Registration failed";
     }
     
-    public Customer getCustomerDataUsingUserId (int user_id){
+    public Customer getCustomerDataUsingUserId (int user_id) {
         
         try {
             Statement s;
-            PreparedStatement ps;
             ResultSet rs;
             
             String query = "SELECT * FROM CUSTOMER WHERE USER_ID = '" + user_id + "'";

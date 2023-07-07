@@ -118,7 +118,22 @@
                 </div>
             </div>
         </div>
+
+        <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
         
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <div class="rounded me-2 bg-primary">&emsp;&nbsp;&nbsp;</div>
+                    <strong class="me-auto">Info</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Hello, world! This is a toast message.
+                </div>  
+            </div>
+        </div>
+
         <!-- login -->
         <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -148,4 +163,16 @@
             </div>
         </div>
     </body>
+    <script>
+        
+        const toastTrigger = document.getElementById('liveToastBtn')
+        const toastLiveExample = document.getElementById('liveToast')
+
+        if (toastTrigger) {
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            toastTrigger.addEventListener('click', () => {
+                toastBootstrap.show()
+            })
+        }
+    </script>
 </html>
