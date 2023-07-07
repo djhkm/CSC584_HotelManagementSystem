@@ -4,6 +4,7 @@
     Author     : hakimchi
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -20,6 +21,13 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     </head>
     <body>
+        <c:if test="${sessionScope.user != null}">
+            <script>
+                $(document).ready(function(){
+                    window.location.replace("index.jsp");
+                });
+            </script>
+        </c:if>
         <jsp:include page="topNav.jsp">
             <jsp:param name="SignUp" value="SignUp"/>
         </jsp:include>

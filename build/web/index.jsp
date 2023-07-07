@@ -40,13 +40,13 @@
                         <input class="form-control" type="date" name="dateEnd"/>
                     </div>
                     <div class="col-md-1">
-                        <input class="form-control" type="number" name="roomCount" min="1" value="1"/>
+                        <input class="form-control" type="number" name="roomCount" min="1" max="3" value="1"/>
                     </div>
                     <div class="col-md-auto">
                         Room,
                     </div>
                     <div class="col-md-1">
-                        <input class="form-control" type="number" name="guestCount" min="1" value="1"/> 
+                        <input class="form-control" type="number" name="guestCount" min="1" max="8" value="1"/> 
                     </div>
                     <div class="col-md-auto">
                         Pax
@@ -106,6 +106,11 @@
                                     <c:out value="${requestScope.errMessage}"/>
                                 </div>
                             </c:if>
+                            <c:if test="${requestScope.successMessage != null}">
+                                <div class="container-fluid" style="color:blue">
+                                    <c:out value="${requestScope.successMessage}"/>
+                                </div>
+                            </c:if>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-secondary" name="SignUp">Sign Up</button>
                             <button type="submit" class="btn btn-primary" name="SignIn">Sign In</button>
@@ -114,7 +119,7 @@
                 </form>
             </div>
         </div>
-        <c:if test="${requestScope.errMessage != null}">
+        <c:if test="${requestScope.errMessage != null || requestScope.successMessage != null}">
         <script>
             $(document).ready(function () {
                 $('#loginModal').modal('show');
