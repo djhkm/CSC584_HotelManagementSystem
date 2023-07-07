@@ -56,7 +56,7 @@ public class LoginServlet extends HttpServlet {
     //            customer = customerDAO.getCustomerDataUsingUserId(user_id);
                 HttpSession session = request.getSession();
                 session.setAttribute("user", users);
-                request.setAttribute("successMessage", statusA);
+                //request.setAttribute("successMessage", statusA);
                 System.out.println("login success");
             }else{
                 request.setAttribute("errMessage", statusA);
