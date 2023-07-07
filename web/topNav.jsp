@@ -10,9 +10,9 @@
             <a class="btn btn-light" href="index.jsp">HMS Hotel</a>
         </div>
         <% // only display button if not in sign up page
-            System.out.println("before if");%>
+           //System.out.println("before if");%>
         <c:if test="${param.SignUp == null}">
-            <% System.out.println("signup is null"); %>
+            <% //System.out.println("signup is null"); %>
             <div class="col-2 p-3">
                 <c:if test="${sessionScope.user == null}">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">

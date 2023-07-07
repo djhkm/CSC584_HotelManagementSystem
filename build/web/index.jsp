@@ -24,16 +24,16 @@
     <body>
         <c:import url="topNav.jsp"/>
         <div class="container-fluid text-center p-4" style="background:lightgray;">
-            <form action="" method="GET">
+            <form action="reservation.jsp" method="GET">
                 <div class="row justify-content-center mb-2">
                     <div class="col-md-4">Dates</div>
                     <div class="col-md-4">Rooms & Guests</div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-2">
-                        <input class="form-control"  type="date" name="dateStart"/>
+                        <input class="form-control" type="date" name="dateStart"/>
                     </div>
-                    <div class="col-md-auto">
+                    <div class="col-md-auto d-flex align-items-center">
                         &rarr;
                     </div>
                     <div class="col-md-2 border-right">
@@ -42,13 +42,13 @@
                     <div class="col-md-1">
                         <input class="form-control" type="number" name="roomCount" min="1" max="3" value="1"/>
                     </div>
-                    <div class="col-md-auto">
+                    <div class="col-md-auto d-flex align-items-center">
                         Room,
                     </div>
                     <div class="col-md-1">
                         <input class="form-control" type="number" name="guestCount" min="1" max="8" value="1"/> 
                     </div>
-                    <div class="col-md-auto">
+                    <div class="col-md-auto d-flex align-items-center">
                         Pax
                     </div>
                     <div class="col-md-1">

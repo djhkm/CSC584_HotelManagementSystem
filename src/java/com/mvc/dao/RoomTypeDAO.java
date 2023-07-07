@@ -54,4 +54,32 @@ public class RoomTypeDAO {
         }
         return null;
     }
+    
+    public RoomType getRoomType(int roomtype_id) {
+        
+        try {
+            Statement s;
+            ResultSet rs;
+            
+            String query = "SELECT * FROM ROOMTYPE WHERE ROOMTYPE_ID = '" + roomtype_id + "'";
+            
+            s = conn.createStatement();
+            rs = s.executeQuery(query);
+            
+            if (rs.next()) {
+                String room_name = rs.getString("ROOM_NAME");
+                String room_description = rs.getString("ROOM_DESCRIPTION");
+                int room_maxpax = rs.getInt("ROOM_MAXPAX");
+                int room_extrabedcount = rs.getInt("ROOM_EXTRABEDCOUNT");
+                double room_price = rs.getDouble("ROOM_PRICE");
+                
+                RoomType rt = new RoomType(roomtype_id, room_name, room_description, room_maxpax, room_extrabedcount, room_price);
+                //conn.close();
+                return rt;
+            }
+        } catch (Exception e) {
+            
+        }
+        return null;
+    }
 }
