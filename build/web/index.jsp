@@ -7,10 +7,6 @@
 <%@page import="com.mvc.bean.Customer"%>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<sql:setDataSource var="myDatasource" 
-driver="org.apache.derby.jdbc.ClientDriver"
-url="jdbc:derby://localhost:1527/CSC584_hotelManagementSystem" user="app" 
-password="app"/>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
