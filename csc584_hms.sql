@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 12, 2023 at 03:57 PM
--- Server version: 8.0.30
--- PHP Version: 8.1.10
+-- Generation Time: Jul 06, 2023 at 01:51 PM
+-- Server version: 5.7.41
+-- PHP Version: 7.4.32
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,15 +28,16 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `booking` (
-  `BOOKING_ID` int NOT NULL,
+  `BOOKING_ID` int(11) NOT NULL,
   `INVOICE_NUMBER` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'INV231230001',
-  `BOOKING_PAX` int DEFAULT NULL,
-  `BOOKING_DAYSOFSTAY` int DEFAULT NULL,
+  `BOOKING_DATE` datetime DEFAULT NULL,
+  `BOOKING_PAX` int(11) DEFAULT NULL,
+  `BOOKING_DAYSOFSTAY` int(11) DEFAULT NULL,
   `BOOKING_CHECKINDATE` datetime DEFAULT NULL,
   `BOOKING_CHECKOUTDATE` datetime DEFAULT NULL,
   `BOOKING_TOTALFEE` double DEFAULT NULL,
-  `CUSTOMER_ID` int DEFAULT NULL,
-  `ROOM_ID` int DEFAULT NULL
+  `CUSTOMER_ID` int(11) DEFAULT NULL,
+  `ROOM_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -46,13 +47,20 @@ CREATE TABLE `booking` (
 --
 
 CREATE TABLE `customer` (
-  `CUSTOMER_ID` int NOT NULL,
-  `CUSTOMER_HONORIFIC` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Mr. Mrs. Miss. Ms.',
+  `CUSTOMER_ID` int(11) NOT NULL,
+  `CUSTOMER_HONORIFIC` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Mr. Mrs. Miss. Ms.',
   `CUSTOMER_NAME` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `CUSTOMER_EMAIL` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `CUSTOMER_PHONENUMBER` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `USER_ID` int DEFAULT NULL
+  `USER_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`CUSTOMER_ID`, `CUSTOMER_HONORIFIC`, `CUSTOMER_NAME`, `CUSTOMER_EMAIL`, `CUSTOMER_PHONENUMBER`, `USER_ID`) VALUES
+(1, 'Mr.', 'qwe', 'qwe@qwe', '123', 1);
 
 -- --------------------------------------------------------
 
@@ -61,10 +69,10 @@ CREATE TABLE `customer` (
 --
 
 CREATE TABLE `room` (
-  `ROOM_ID` int NOT NULL,
-  `ROOM_NUMBER` int DEFAULT NULL COMMENT '1(Level)01(Room Number)',
-  `ROOM_STATUS` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Occupied, Needs Cleaning, Booked, Available',
-  `ROOMTYPE_ID` int DEFAULT NULL
+  `ROOM_ID` int(11) NOT NULL,
+  `ROOM_NUMBER` int(11) DEFAULT NULL COMMENT '1(Level)01(Room Number)',
+  `ROOM_STATUS` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Occupied, Needs Cleaning, Booked, Available',
+  `ROOMTYPE_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -91,11 +99,11 @@ INSERT INTO `room` (`ROOM_ID`, `ROOM_NUMBER`, `ROOM_STATUS`, `ROOMTYPE_ID`) VALU
 --
 
 CREATE TABLE `roomtype` (
-  `ROOMTYPE_ID` int NOT NULL,
+  `ROOMTYPE_ID` int(11) NOT NULL,
   `ROOM_NAME` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Guest Room, Executive Suite, Presidential Suite',
-  `ROOM_DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '2 Twin Beds, Guest Room (ExtraBeds:1) (MaxPeople:3) (Rooms:3)\r\n1 King Bed, Guest Room (ExtraBeds:NA) (MaxPeople:2) (Rooms:3)\r\n2 Twin Beds, Executive Suite (ExtraBeds:1) (MaxPeople:3) (Rooms:2)\r\n1 King Bed, Executive Suite (ExtraBeds:1) (MaxPeople:3) (Rooms:2)\r\n1 King Bed, Presidential Suite (ExtraBeds:NA) (MaxPeople:2) (Rooms:1)',
-  `ROOM_MAXPAX` int DEFAULT NULL,
-  `ROOM_EXTRABEDCOUNT` int DEFAULT NULL,
+  `ROOM_DESCRIPTION` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '2 Twin Beds, Guest Room (ExtraBeds:1) (MaxPeople:3) (Rooms:3)\r\n1 King Bed, Guest Room (ExtraBeds:NA) (MaxPeople:2) (Rooms:3)\r\n2 Twin Beds, Executive Suite (ExtraBeds:1) (MaxPeople:3) (Rooms:2)\r\n1 King Bed, Executive Suite (ExtraBeds:1) (MaxPeople:3) (Rooms:2)\r\n1 King Bed, Presidential Suite (ExtraBeds:NA) (MaxPeople:2) (Rooms:1)',
+  `ROOM_MAXPAX` int(11) DEFAULT NULL,
+  `ROOM_EXTRABEDCOUNT` int(11) DEFAULT NULL,
   `ROOM_PRICE` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -117,11 +125,11 @@ INSERT INTO `roomtype` (`ROOMTYPE_ID`, `ROOM_NAME`, `ROOM_DESCRIPTION`, `ROOM_MA
 --
 
 CREATE TABLE `staff` (
-  `STAFF_ID` int NOT NULL,
+  `STAFF_ID` int(11) NOT NULL,
   `STAFF_NAME` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `STAFF_EMAIL` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `STAFF_PHONENUMBER` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `USER_ID` int DEFAULT NULL
+  `USER_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -131,11 +139,18 @@ CREATE TABLE `staff` (
 --
 
 CREATE TABLE `users` (
-  `USER_ID` int NOT NULL,
+  `USER_ID` int(11) NOT NULL,
   `USERNAME` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `USER_PASSWORD` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `USER_TYPE` int DEFAULT NULL COMMENT '1 - Staff, 2 - Customer'
+  `USER_TYPE` int(11) DEFAULT NULL COMMENT '1 - Staff, 2 - Customer'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`USER_ID`, `USERNAME`, `USER_PASSWORD`, `USER_TYPE`) VALUES
+(1, 'qwe', 'qwe', 2);
 
 --
 -- Indexes for dumped tables
@@ -190,37 +205,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `BOOKING_ID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `BOOKING_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `CUSTOMER_ID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `CUSTOMER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `ROOM_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ROOM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `roomtype`
 --
 ALTER TABLE `roomtype`
-  MODIFY `ROOMTYPE_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ROOMTYPE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `STAFF_ID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `STAFF_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `USER_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10001;
+  MODIFY `USER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

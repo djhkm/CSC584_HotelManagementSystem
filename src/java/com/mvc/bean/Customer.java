@@ -9,7 +9,7 @@ package com.mvc.bean;
  *
  * @author hakimchi
  */
-public class CustomerBean {
+public class Customer {
     private int customer_id;
     private String customer_honorific;
     private String customer_name;
@@ -17,10 +17,10 @@ public class CustomerBean {
     private String customer_phoneNumber;
     private int customer_user_id;
 
-    public CustomerBean() {
+    public Customer() {
     }
 
-    public CustomerBean(int customer_id, String customer_honorific, String customer_name, String customer_email, String customer_phoneNumber, int customer_user_id) {
+    public Customer(int customer_id, String customer_honorific, String customer_name, String customer_email, String customer_phoneNumber, int customer_user_id) {
         this.customer_id = customer_id;
         this.customer_honorific = customer_honorific;
         this.customer_name = customer_name;

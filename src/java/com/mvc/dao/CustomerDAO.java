@@ -5,7 +5,7 @@
  */
 package com.mvc.dao;
 
-import com.mvc.bean.CustomerBean;
+import com.mvc.bean.Customer;
 import com.mvc.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +21,7 @@ public class CustomerDAO {
     Connection conn = DBConnection.createConnection();
     
     // add new customer data
-    public String registerCustomerData (CustomerBean customer) {
+    public String registerCustomerData (Customer customer) {
         String customer_honorific = customer.getCustomer_honorific();
         String customer_name = customer.getCustomer_name();
         String customer_email = customer.getCustomer_email();
@@ -50,7 +50,7 @@ public class CustomerDAO {
         return "Registration failed";
     }
     
-    public CustomerBean getCustomerDataUsingUserId (int user_id){
+    public Customer getCustomerDataUsingUserId (int user_id){
         
         try {
             Statement s;
@@ -63,7 +63,7 @@ public class CustomerDAO {
             rs = s.executeQuery(query);
             
             if (rs.next()) {
-                CustomerBean customer = new CustomerBean(rs.getInt("CUSTOMER_ID"), rs.getString("CUSTOMER_HONORIFIC"), rs.getString("CUSTOMER_NAME"), rs.getString("CUSTOMER_EMAIL"), rs.getString("CUSTOMER_PHONENUMBER"), rs.getInt("USER_ID"));
+                Customer customer = new Customer(rs.getInt("CUSTOMER_ID"), rs.getString("CUSTOMER_HONORIFIC"), rs.getString("CUSTOMER_NAME"), rs.getString("CUSTOMER_EMAIL"), rs.getString("CUSTOMER_PHONENUMBER"), rs.getInt("USER_ID"));
                 //conn.close();
                 return customer;
             }

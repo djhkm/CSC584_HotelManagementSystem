@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : haziq
 */
 
-html, body{   /* remove margin to make page fill up entire height and width */
+body{   /* remove margin to make page fill up entire height and width */
     margin: 0px; 
 }
 
