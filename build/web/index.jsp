@@ -5,15 +5,12 @@
 --%>
 <%@page import="com.mvc.dao.CustomerDAO"%>
 <%@page import="com.mvc.bean.Customer"%>
-<%
-    int user_id = 0;
-    if (session.getAttribute("user_id") != null) {
-        user_id = (Integer)session.getAttribute("user_id");
-    }
-    
-%>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<sql:setDataSource var="myDatasource" 
+driver="org.apache.derby.jdbc.ClientDriver"
+url="jdbc:derby://localhost:1527/CSC584_hotelManagementSystem" user="app" 
+password="app"/>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -21,7 +18,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Hotel Booking</title>
         <link rel="stylesheet" href="./style.css"/>
-        
+        <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
         <!-- bootstrap stuff -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
@@ -30,91 +27,85 @@
     <body>
         <div class="container-fluid text-center topNav">
             <div class="row">
-                <div class="col-10">
+                <div class="col-10 p-3">
                     logo goes here
                 </div>
-                <div class="col-2">
-                    <%
-                        if (user_id == 0) {
-                    %>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
-                        LOGIN / SIGN UP
-                    </button>
-                    <%
-                        } else {
-                        CustomerDAO customerDAO = new CustomerDAO();
-                        Customer customer = customerDAO.getCustomerDataUsingUserId(user_id);
-                    %>
-                    <div class="fs-5 mb-1 d-inline">
-                        <%=customer.getCustomer_name()%>
-                    </div>
-                    &emsp;
-                    <a type="button" class="btn btn-sm btn-secondary d-inline" href="logout.do">
-                        LOG OUT
-                    </a>
-                    <%
-                        }
-                    %>
-<!--                    <a href="login.jsp">
-                        <button class="btn btn-primary">
+                <div class="col-2 p-2">
+                    <c:if test="${sessionScope.user == null}">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
                             LOGIN / SIGN UP
                         </button>
-                    </a>-->
+                    </c:if>
+                    <c:if test="${sessionScope.user != null}">
+                        <jsp:useBean id="user" class="com.mvc.bean.Users" scope="session"/>
+                        <div class="fs-5 mb-1 d-inline">
+                            <c:out value="${user.username}"/>
+                        </div>
+                        &emsp;
+                        <a type="button" class="btn btn-sm btn-secondary d-inline" href="logout.do">
+                            LOG OUT
+                        </a>
+                    </c:if>
                 </div>
             </div>
         </div>
-        <div class="container-fluid text-center" style="background:lightgray; padding: 20px;">
-            <form action="reservation.jsp" method="GET">
+        <div class="container-fluid text-center p-4" style="background:lightgray;">
+            <form action="#">
                 <div class="row justify-content-center mb-2">
-                    <div class="col-md-5">Dates</div>
+                    <div class="col-md-4">Dates</div>
                     <div class="col-md-4">Rooms & Guests</div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-2">
                         <input class="form-control"  type="date" name="dateStart"/>
                     </div>
-                    <div class="col-md-auto d-flex align-items-center">
+                    <div class="col-md-auto">
                         &rarr;
                     </div>
                     <div class="col-md-2 border-right">
-                        <input class="form-control"  type="date" name="dateEnd"/>
+                        <input class="form-control" type="date" name="dateEnd"/>
                     </div>
                     <div class="col-md-1">
-                        <input class="form-control" style="//width:40px" type="number" name="roomCount" value="1"/>
+                        <input class="form-control" type="number" name="roomCount" min="1" value="1"/>
                     </div>
-                    <div class="col-md-auto d-flex align-items-center">
+                    <div class="col-md-auto">
                         Room,
                     </div>
                     <div class="col-md-1">
-                        <input class="form-control" style="//width:40px" type="number" name="guestCount" value="1"/> 
+                        <input class="form-control" type="number" name="guestCount" min="1" value="1"/> 
                     </div>
-                    <div class="col-md-auto d-flex align-items-center">
+                    <div class="col-md-auto">
                         Pax
                     </div>
                     <div class="col-md-1">
-                        <button class="btn btn-secondary" type="submit">VIEW RATES</button>
+                        <a href="reservation.jsp">
+                            <div class="btn btn-secondary">
+                                VIEW RATES
+                            </div>
+                        </a>
                     </div>
                 </div>
             </form>
         </div>
         <div style="height:400px; overflow:clip">
             <img src="./hotel-front.jpg"
-                 style="width:100%;object-position: 0px -135px;"/>
+                 class="img-fluid"
+                 style="object-position: 0px -135px;"/>
         </div>
         <div class="container mt-2">
             <h3>Rooms and Suites</h3>
             <div class="row justify-content-center">
                 <div class="col-2 border">
-                    <img src="1-guesttwins.jpg" style="width:100%"/>
+                    <img class="img-fluid" src="1-guesttwins.jpg"/>
                 </div>
                 <div class="col-2 border offset-1">
-                    <img src="2-guestking.jpg" style="width:100%"/>
+                    <img class="img-fluid" src="2-guestking.jpg"/>
                 </div>
                 <div class="col-2 border offset-1">
-                    <img src="3-executiveking.jpg" style="width:100%"/>
+                    <img class="img-fluid" src="3-executiveking.jpg"/>
                 </div>
                 <div class="col-2 border offset-1">
-                    <img src="4-presidential.jpg" style="width:100%"/>
+                    <img class="img-fluid" src="4-presidential.jpg"/>
                 </div>
             </div>
         </div>
@@ -155,13 +146,26 @@
                             </div>
                         </div>
                         <div class="modal-footer">
+                            <c:if test="${requestScope.errMessage != null}">
+                                <div class="container-fluid" style="color: red">
+                                    <c:out value="${requestScope.errMessage}"/>
+                                </div>
+                            </c:if>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Sign In</button>
+                            <button type="submit" class="btn btn-secondary" name="SignUp">Sign Up</button>
+                            <button type="submit" class="btn btn-primary" name="SignIn">Sign In</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+        <c:if test="${requestScope.errMessage != null}">
+        <script>
+            $(document).ready(function () {
+                $('#loginModal').modal('show');
+            });
+        </script>
+        </c:if>
     </body>
     <script>
         
