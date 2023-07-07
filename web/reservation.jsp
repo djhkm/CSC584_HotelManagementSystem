@@ -23,55 +23,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        <!-- fontawasome icon -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     
     <!-- verify get parameter -->
     <%
         try {
-    %>
-    <c:if test="${param.dateStart == '' || param.dateEnd == '' || param.roomCount == '' || param.guestCount == '' || param.roomCount == 0 || param.guestCount == 0}">
-        <script>
-            location.href="index.jsp";
-        </script>
-    </c:if>
-    <c:if test="${param.dateStart != '' && param.dateEnd != '' && param.roomCount != '' && param.guestCount != '' && param.roomCount != 0 && param.guestCount != 0}">
-        <%
             LocalDate localDate = LocalDate.now();
             SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy");
             Date today_date = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
             Date dateStart = parser.parse(request.getParameter("dateStart"));
             Date dateEnd = parser.parse(request.getParameter("dateEnd"));
-
-            if ((dateStart.compareTo(today_date) < 0) || (dateEnd.compareTo(dateStart) < 0)) {
-        %>
-        <script>
-            location.href="index.jsp";
-        </script>
-        <%
-            }
-        %>
-    </c:if>
-    <%
-        } catch (Exception e) {
-            e.printStackTrace();
+            String stringDateStart = formatter.format(dateStart);
+            String stringDateEnd = formatter.format(dateEnd);
+            
+            int roomCount = Integer.parseInt(request.getParameter("roomCount"));
+            int guestCount = Integer.parseInt(request.getParameter("guestCount"));
+            int newGuestCount = guestCount / roomCount;
+            
+            if ((dateStart.compareTo(today_date) < 0) || (dateEnd.compareTo(dateStart) < 0) || roomCount == 0 || guestCount == 0) {
     %>
     <script>
         location.href="index.jsp";
     </script>
     <%
-        }
-        int roomCount = Integer.parseInt(request.getParameter("roomCount"));
-        int guestCount = Integer.parseInt(request.getParameter("guestCount"));
-
-        int newGuestCount = guestCount / roomCount;
-
-        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy");
-        Date dateStart = parser.parse(request.getParameter("dateStart"));
-        Date dateEnd = parser.parse(request.getParameter("dateEnd"));
-        
-        String stringDateStart = formatter.format(dateStart);
-        String stringDateEnd = formatter.format(dateEnd);
+            }            
     %>
     
     <body>
@@ -147,8 +125,9 @@
                 <hr class="mt-0 mb-0">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-4 d-flex align-items-end">
                             <img class="img-thumbnail" src="<% out.print(rtvalue.getRoomtype_id()); %>.jpg" style="max-width: 250px;">
+                            <% for (int i = 0; i < rtvalue.getRoom_maxpax(); i++) { %><i class="pb-1 fa-solid fa-person"></i><% } %>
                         </div>
                         <div class="col-4 d-flex justify-content-center align-items-center">
                             <h3><% out.print((int) rtvalue.getRoom_price()); %></h3>
@@ -207,4 +186,16 @@
             </div>
         </div>
     </body>
+    
+    <%
+        } catch (Exception e) {
+            e.printStackTrace();
+    %>
+    <script>
+        location.href="index.jsp";
+    </script>
+    <%
+        }
+    %>
+    
 </html>
