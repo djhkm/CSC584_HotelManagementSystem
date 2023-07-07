@@ -60,10 +60,16 @@
     </script>
     <%
         }
+        int roomCount = Integer.parseInt(request.getParameter("roomCount"));
+        int guestCount = Integer.parseInt(request.getParameter("guestCount"));
+
+        int newGuestCount = guestCount / roomCount;
+
         SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy");
         Date dateStart = parser.parse(request.getParameter("dateStart"));
         Date dateEnd = parser.parse(request.getParameter("dateEnd"));
+        
         String stringDateStart = formatter.format(dateStart);
         String stringDateEnd = formatter.format(dateEnd);
     %>
@@ -126,7 +132,7 @@
                     RoomDAO rdao = new RoomDAO();
                     rooms = rdao.availableSameRoomTypeWithCheckInOutDate(request.getParameter("dateStart"), request.getParameter("dateEnd"), rtvalue.getRoomtype_id());
                     
-                    if (rooms.size() > 0) {
+                    if (rooms.size() > 0 && rooms.size() >= roomCount && rtvalue.getRoom_maxpax() >= newGuestCount) {
                         //int price = (int) rtvalue.getRoom_price();
             %>
             <div class="card mb-3">
@@ -149,7 +155,7 @@
                             <small class="pt-1">&nbsp;MYR / night</small>
                         </div>
                         <div class="col-4 text-end d-flex justify-content-end align-items-center">
-                            <a class="btn btn-primary" href="#">Select</a>
+                            <a class="btn btn-primary" href="reservationdetails.jsp?dateStart=<c:out value="${param.dateStart}"></c:out>&dateEnd=<c:out value="${param.dateEnd}"></c:out>&roomCount=<c:out value="${param.roomCount}"></c:out>&guestCount=<c:out value="${param.guestCount}"></c:out>&roomType=<% out.print(rtvalue.getRoomtype_id()); %>">Select</a>
                         </div>
                     </div>
                 </div>

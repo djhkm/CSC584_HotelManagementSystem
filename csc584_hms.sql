@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 07, 2023 at 08:24 PM
+-- Generation Time: Jul 07, 2023 at 08:49 PM
 -- Server version: 5.7.41
 -- PHP Version: 7.4.32
 
@@ -90,14 +90,18 @@ INSERT INTO `room` (`ROOM_ID`, `ROOM_NUMBER`, `ROOM_STATUS`, `ROOMTYPE_ID`) VALU
 (1, 101, 'Available', 1),
 (2, 102, 'Available', 1),
 (3, 103, 'Available', 1),
-(4, 104, 'Needs Cleaning', 2),
+(4, 104, 'Available', 1),
 (5, 105, 'Needs Cleaning', 2),
-(6, 106, 'Available', 2),
-(7, 201, 'Available', 3),
-(8, 202, 'Available', 3),
-(9, 203, 'Available', 4),
-(10, 204, 'Available', 4),
-(11, 300, 'Available', 5);
+(6, 106, 'Needs Cleaning', 2),
+(7, 107, 'Available', 2),
+(8, 108, 'Available', 2),
+(9, 201, 'Needs Cleaning', 3),
+(10, 202, 'Available', 3),
+(11, 203, 'Available', 3),
+(12, 204, 'Available', 4),
+(13, 205, 'Available', 4),
+(14, 206, 'Available', 4),
+(15, 300, 'Available', 5);
 
 -- --------------------------------------------------------
 
@@ -224,7 +228,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `ROOM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ROOM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `roomtype`
