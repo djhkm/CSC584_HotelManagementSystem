@@ -34,42 +34,6 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-<<<<<<< HEAD
-        // get form data
-        String username = request.getParameter("login_username");
-        String password = request.getParameter("login_password");
-        
-        // initialize
-        Customer customer = new Customer();
-        Users users = new Users();
-        
-        CustomerDAO customerDAO = new CustomerDAO();
-        UsersDAO userDAO = new UsersDAO();
-        
-        // validate username and password
-        users.setUsername(username);
-        users.setPassword(password);
-        String statusA = userDAO.authenticateUser(users);
-        if (statusA.equals("1")) {
-            int user_id = userDAO.findUserId(username);
-//            customer = customerDAO.getCustomerDataUsingUserId(user_id);
-            HttpSession session = request.getSession();
-            session.setAttribute("user_id",user_id);
-            request.setAttribute("successMessage", statusA);
-            request.getRequestDispatcher("dashboard.jsp").forward(request, response);
-        }
-        else if (statusA.equals("2")) {
-            int user_id = userDAO.findUserId(username);
-//            customer = customerDAO.getCustomerDataUsingUserId(user_id);
-            HttpSession session = request.getSession();
-            session.setAttribute("user_id",user_id);
-            request.setAttribute("successMessage", statusA);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-        }
-        else {
-            request.setAttribute("errMessage", statusA);
-            request.getRequestDispatcher("register-customer.jsp").forward(request, response);
-=======
         if(request.getParameter("SignIn") != null){
             // get form data
             String username = request.getParameter("login_username");
@@ -86,22 +50,28 @@ public class LoginServlet extends HttpServlet {
             users.setUsername(username);
             users.setPassword(password);
             String statusA = userDAO.authenticateUser(users);
-            if (statusA.equals("Authentication success")) {
+            if (statusA.equals("1")) {
                 int user_id = userDAO.findUserId(username);
     //            customer = customerDAO.getCustomerDataUsingUserId(user_id);
+                HttpSession session = request.getSession();
+                session.setAttribute("user_id",user_id);
+                request.setAttribute("successMessage", statusA);
+                request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+            }
+            else if (statusA.equals("2")) {
+                int user_id = userDAO.findUserId(username);
     //            customer = customerDAO.getCustomerDataUsingUserId(user_id);
                 HttpSession session = request.getSession();
-                session.setAttribute("user", users);
+                session.setAttribute("user_id",user_id);
                 request.setAttribute("successMessage", statusA);
-                System.out.println("login success");
-            }else{
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            } else {
                 request.setAttribute("errMessage", statusA);
                 System.out.println("login failed, sending err " + request.getAttribute("errMessage"));
             }
             request.getRequestDispatcher("/index.jsp").forward(request, response);
-        }else{
+        } else {
             request.getRequestDispatcher("/register-customer.jsp").forward(request, response);
->>>>>>> ddc92324ffab591fe1b323baaf0c7af3cd665ef5
         }
     }
 
