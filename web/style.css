@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : haziq
 */
 
-html, body{   /* remove margin to make page fill up entire height and width */
+body{   /* remove margin to make page fill up entire height and width */
     margin: 0px; 
 }
 
@@ -16,14 +16,5 @@ html, body{   /* remove margin to make page fill up entire height and width */
     background:black; 
     color: white; 
     padding:5px
-}
-
-.circleButton{
-    display:inline-block; 
-    background:white;
-    padding: 5px;
-    border-radius: 20px;
-    border: 1px solid black;
-    color: black;
 }
 
