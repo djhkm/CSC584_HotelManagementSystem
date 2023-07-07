@@ -12,7 +12,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Hotel Booking</title>
+        <title>HMS Hotel | Home</title>
+        <!-- jQuery import -->
         <link rel="stylesheet" href="./style.css"/>
         <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
         <!-- bootstrap stuff -->
@@ -21,32 +22,9 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     </head>
     <body>
-        <div class="container-fluid text-center topNav">
-            <div class="row">
-                <div class="col-10 p-3">
-                    logo goes here
-                </div>
-                <div class="col-2 p-2">
-                    <c:if test="${sessionScope.user == null}">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
-                            LOGIN / SIGN UP
-                        </button>
-                    </c:if>
-                    <c:if test="${sessionScope.user != null}">
-                        <jsp:useBean id="user" class="com.mvc.bean.Users" scope="session"/>
-                        <div class="fs-5 mb-1 d-inline">
-                            <c:out value="${user.username}"/>
-                        </div>
-                        &emsp;
-                        <a type="button" class="btn btn-sm btn-secondary d-inline" href="logout.do">
-                            LOG OUT
-                        </a>
-                    </c:if>
-                </div>
-            </div>
-        </div>
+        <c:import url="topNav.jsp"/>
         <div class="container-fluid text-center p-4" style="background:lightgray;">
-            <form action="#">
+            <form action="" method="GET">
                 <div class="row justify-content-center mb-2">
                     <div class="col-md-4">Dates</div>
                     <div class="col-md-4">Rooms & Guests</div>
@@ -74,11 +52,7 @@
                         Pax
                     </div>
                     <div class="col-md-1">
-                        <a href="reservation.jsp">
-                            <div class="btn btn-secondary">
-                                VIEW RATES
-                            </div>
-                        </a>
+                        <button class="btn btn-secondary" type="submit">VIEW RATES</button>
                     </div>
                 </div>
             </form>
@@ -88,7 +62,7 @@
                  class="img-fluid"
                  style="object-position: 0px -135px;"/>
         </div>
-        <div class="container mt-2">
+        <div class="container mt-2 mb-4">
             <h3>Rooms and Suites</h3>
             <div class="row justify-content-center">
                 <div class="col-2 border">
@@ -103,21 +77,6 @@
                 <div class="col-2 border offset-1">
                     <img class="img-fluid" src="4-presidential.jpg"/>
                 </div>
-            </div>
-        </div>
-
-        <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
-        
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <div class="rounded me-2 bg-primary">&emsp;&nbsp;&nbsp;</div>
-                    <strong class="me-auto">Info</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    Hello, world! This is a toast message.
-                </div>  
             </div>
         </div>
 
@@ -163,16 +122,4 @@
         </script>
         </c:if>
     </body>
-    <script>
-        
-        const toastTrigger = document.getElementById('liveToastBtn')
-        const toastLiveExample = document.getElementById('liveToast')
-
-        if (toastTrigger) {
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-            toastTrigger.addEventListener('click', () => {
-                toastBootstrap.show()
-            })
-        }
-    </script>
 </html>
