@@ -162,46 +162,6 @@
             %>
             
         </div>
-        
-        <!-- login -->
-        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <form action="LoginServlet" method="POST">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-4" id="exampleModalLabel">Welcome to HMS Hotel</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p class="fs-5">Sign in to your account</p>
-                            <div class="mb-3">
-                                <label for="loginUsername" class="form-label">Username</label>
-                                <input type="text" name="login_username" class="form-control" id="loginUsername">
-                            </div>
-                            <div class="mb-3">
-                                <label for="loginPassword" class="form-label">Password</label>
-                                <input type="password" name="login_password" class="form-control" id="loginPassword">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <c:if test="${requestScope.errMessage != null}">
-                                <div class="container-fluid" style="color: red">
-                                    <c:out value="${requestScope.errMessage}"/>
-                                </div>
-                            </c:if>
-                            <c:if test="${requestScope.successMessage != null}">
-                                <div class="container-fluid" style="color:blue">
-                                    <c:out value="${requestScope.successMessage}"/>
-                                </div>
-                            </c:if>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-secondary" name="SignUp">Sign Up</button>
-                            <button type="submit" class="btn btn-primary" name="SignIn">Sign In</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
     </body>
     
     <%

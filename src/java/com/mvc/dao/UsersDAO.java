@@ -102,7 +102,7 @@ public class UsersDAO {
             Statement s;
             ResultSet rs;
             
-            String query = "SELECT * FROM USERS WHERE BINARY USERNAME = '" + username + "' AND USER_PASSWORD = '" + password + "'";
+            String query = "SELECT * FROM USERS WHERE BINARY USERNAME = '" + username + "' AND BINARY USER_PASSWORD = '" + password + "'";
             
             s = conn.createStatement();
             rs = s.executeQuery(query);
