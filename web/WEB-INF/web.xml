@@ -12,6 +12,10 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.mvc.controller.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SalesReportServlet</servlet-name>
+        <servlet-class>com.mvc.controller.SalesReportServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterCustomerServlet</servlet-name>
         <url-pattern>/RegisterCustomerServlet</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SalesReportServlet</servlet-name>
+        <url-pattern>/Staff/SalesReport</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
