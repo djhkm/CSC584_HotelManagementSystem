@@ -8,8 +8,8 @@ package com.mvc.controller;
 import com.mvc.bean.Booking;
 import com.mvc.dao.BookingDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +35,7 @@ public class SalesReportServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         BookingDAO dao = new BookingDAO();
-        ArrayList<Booking> array = new ArrayList();
+        List<Booking> array;
         array = dao.getAllBooking();
         
         request.setAttribute("bookingList", array);

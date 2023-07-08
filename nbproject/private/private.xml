@@ -3,7 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/_codes/CSC584_HotelManagementSystem/web/index.jsp</file>
+            <file>file:/C:/Users/haziq/Documents/NetBeansProjects/CSC584_HotelManagementSystem/src/java/com/mvc/controller/SalesReportServlet.java</file>
+            <file>file:/C:/Users/haziq/Documents/NetBeansProjects/CSC584_HotelManagementSystem/web/staff-salesreport.jsp</file>
+            <file>file:/C:/Users/haziq/Documents/NetBeansProjects/CSC584_HotelManagementSystem/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/haziq/Documents/NetBeansProjects/CSC584_HotelManagementSystem/web/index.jsp</file>
+            <file>file:/C:/Users/haziq/Documents/NetBeansProjects/CSC584_HotelManagementSystem/src/java/com/mvc/bean/Booking.java</file>
+            <file>file:/C:/Users/haziq/Documents/NetBeansProjects/CSC584_HotelManagementSystem/src/java/com/mvc/dao/BookingDAO.java</file>
         </group>
     </open-files>
 </project-private>

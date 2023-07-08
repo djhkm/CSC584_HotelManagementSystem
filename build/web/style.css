@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : haziq
 */
 
-html, body{   /* remove margin to make page fill up entire height and width */
+body{   /* remove margin to make page fill up entire height and width */
     margin: 0px; 
 }
 
@@ -27,3 +27,9 @@ html, body{   /* remove margin to make page fill up entire height and width */
     color: black;
 }
 
+.vertical-line {
+  border: none;
+  border-left: 1px solid #ccc;
+  height: 100%;
+  margin: 0 auto;
+}

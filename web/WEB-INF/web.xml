@@ -30,7 +30,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SalesReportServlet</servlet-name>
-        <url-pattern>/Staff/SalesReport</url-pattern>
+        <url-pattern>/SalesReport</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

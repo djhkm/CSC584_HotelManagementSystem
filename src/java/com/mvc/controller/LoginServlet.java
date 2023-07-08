@@ -50,21 +50,27 @@ public class LoginServlet extends HttpServlet {
             users.setUsername(username);
             users.setPassword(password);
             String statusA = userDAO.authenticateUser(users);
-            if (statusA.equals("Authentication success")) {
+            if (statusA.equals("1")) {
                 int user_id = userDAO.findUserId(username);
-    //            customer = customerDAO.getCustomerDataUsingUserId(user_id);
-    //            customer = customerDAO.getCustomerDataUsingUserId(user_id);
+                users = new Users(user_id, username, password, Integer.parseInt(statusA));
                 HttpSession session = request.getSession();
                 session.setAttribute("user", users);
-                //request.setAttribute("successMessage", statusA);
-                System.out.println("login success");
-            }else{
+                request.setAttribute("successMessage", statusA);
+                request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+            }
+            else if (statusA.equals("2")) {
+                int user_id = userDAO.findUserId(username);
+                users = new Users(user_id, username, password, Integer.parseInt(statusA));
+                HttpSession session = request.getSession();
+                session.setAttribute("user", users);
+                request.setAttribute("successMessage", statusA);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            } else {
                 request.setAttribute("errMessage", statusA);
                 System.out.println("login failed, sending err " + request.getAttribute("errMessage"));
             }
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
-        }else{
-            //request.getRequestDispatcher("/register-customer.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        } else {
             response.sendRedirect("register-customer.jsp");
         }
     }

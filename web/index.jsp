@@ -3,14 +3,8 @@
     Created on : Jun 9, 2023, 10:42:00 AM
     Author     : hakimchi
 --%>
-<%@page import="com.mvc.dao.CustomerDAO"%>
-<%@page import="com.mvc.bean.Customer"%>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<sql:setDataSource var="myDatasource" 
-driver="org.apache.derby.jdbc.ClientDriver"
-url="jdbc:derby://localhost:1527/CSC584_hotelManagementSystem" user="app" 
-password="app"/>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -28,16 +22,16 @@ password="app"/>
     <body>
         <c:import url="topNav.jsp"/>
         <div class="container-fluid text-center p-4" style="background:lightgray;">
-            <form action="#">
+            <form action="reservation.jsp" method="GET">
                 <div class="row justify-content-center mb-2">
                     <div class="col-md-4">Dates</div>
                     <div class="col-md-4">Rooms & Guests</div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-2">
-                        <input class="form-control"  type="date" name="dateStart"/>
+                        <input class="form-control" type="date" name="dateStart"/>
                     </div>
-                    <div class="col-md-auto">
+                    <div class="col-md-auto d-flex align-items-center">
                         &rarr;
                     </div>
                     <div class="col-md-2 border-right">
@@ -46,21 +40,17 @@ password="app"/>
                     <div class="col-md-1">
                         <input class="form-control" type="number" name="roomCount" min="1" max="3" value="1"/>
                     </div>
-                    <div class="col-md-auto">
+                    <div class="col-md-auto d-flex align-items-center">
                         Room,
                     </div>
                     <div class="col-md-1">
                         <input class="form-control" type="number" name="guestCount" min="1" max="8" value="1"/> 
                     </div>
-                    <div class="col-md-auto">
+                    <div class="col-md-auto d-flex align-items-center">
                         Pax
                     </div>
                     <div class="col-md-1">
-                        <a href="reservation.jsp">
-                            <div class="btn btn-secondary">
-                                VIEW RATES
-                            </div>
-                        </a>
+                        <button class="btn btn-secondary" type="submit">VIEW RATES</button>
                     </div>
                 </div>
             </form>
@@ -87,7 +77,7 @@ password="app"/>
                 </div>
             </div>
         </div>
-        
+
         <!-- login -->
         <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
             <div class="modal-dialog">

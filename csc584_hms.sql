@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 06, 2023 at 01:51 PM
+-- Generation Time: Jul 07, 2023 at 08:49 PM
 -- Server version: 5.7.41
 -- PHP Version: 7.4.32
 
@@ -40,6 +40,13 @@ CREATE TABLE `booking` (
   `ROOM_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `booking`
+--
+
+INSERT INTO `booking` (`BOOKING_ID`, `INVOICE_NUMBER`, `BOOKING_DATE`, `BOOKING_PAX`, `BOOKING_DAYSOFSTAY`, `BOOKING_CHECKINDATE`, `BOOKING_CHECKOUTDATE`, `BOOKING_TOTALFEE`, `CUSTOMER_ID`, `ROOM_ID`) VALUES
+(1, 'INV2307071', '2023-07-07 13:45:29', 1, 1, '2023-07-08 13:45:29', '2023-07-13 13:45:29', 1500, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -71,7 +78,7 @@ INSERT INTO `customer` (`CUSTOMER_ID`, `CUSTOMER_HONORIFIC`, `CUSTOMER_NAME`, `C
 CREATE TABLE `room` (
   `ROOM_ID` int(11) NOT NULL,
   `ROOM_NUMBER` int(11) DEFAULT NULL COMMENT '1(Level)01(Room Number)',
-  `ROOM_STATUS` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Occupied, Needs Cleaning, Booked, Available',
+  `ROOM_STATUS` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Booked, Occupied, Needs Cleaning, Available',
   `ROOMTYPE_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -83,14 +90,18 @@ INSERT INTO `room` (`ROOM_ID`, `ROOM_NUMBER`, `ROOM_STATUS`, `ROOMTYPE_ID`) VALU
 (1, 101, 'Available', 1),
 (2, 102, 'Available', 1),
 (3, 103, 'Available', 1),
-(4, 104, 'Available', 2),
-(5, 105, 'Available', 2),
-(6, 106, 'Available', 2),
-(7, 201, 'Available', 3),
-(8, 202, 'Available', 3),
-(9, 203, 'Available', 4),
-(10, 204, 'Available', 4),
-(11, 300, 'Available', 5);
+(4, 104, 'Available', 1),
+(5, 105, 'Needs Cleaning', 2),
+(6, 106, 'Needs Cleaning', 2),
+(7, 107, 'Available', 2),
+(8, 108, 'Available', 2),
+(9, 201, 'Needs Cleaning', 3),
+(10, 202, 'Available', 3),
+(11, 203, 'Available', 3),
+(12, 204, 'Available', 4),
+(13, 205, 'Available', 4),
+(14, 206, 'Available', 4),
+(15, 300, 'Available', 5);
 
 -- --------------------------------------------------------
 
@@ -112,11 +123,11 @@ CREATE TABLE `roomtype` (
 --
 
 INSERT INTO `roomtype` (`ROOMTYPE_ID`, `ROOM_NAME`, `ROOM_DESCRIPTION`, `ROOM_MAXPAX`, `ROOM_EXTRABEDCOUNT`, `ROOM_PRICE`) VALUES
-(1, 'Guest Room (Twin)', '2 Twin Beds', 3, 1, 410),
-(2, 'Guest Room (King)', '1 King Bed', 2, 0, 430),
-(3, 'Executive Suite (Twin)', '2 Twin Beds, Concierge Lounge Access', 3, 1, 800),
-(4, 'Executive Suite (King)', '1 King Bed, Pool View, Concierge Lounge Access, Patio', 3, 1, 1130),
-(5, 'Presidential Suite', '1 King Bed, Bay View, Concierge Lounge Access, Patio', 2, 0, 5420);
+(1, 'Guest Room (Twin)', '2 Twin Beds, Guest Room', 3, 1, 410),
+(2, 'Guest Room (King)', '1 King Bed, Guest Room', 2, 0, 430),
+(3, 'Executive Suite (Twin)', '2 Twin Beds, Concierge Lounge Access, Executive Suite', 3, 1, 800),
+(4, 'Executive Suite (King)', '1 King Bed, Pool View, Concierge Lounge Access, Patio, Executive Suite', 3, 1, 1130),
+(5, 'Presidential Suite', '1 King Bed, Bay View, Concierge Lounge Access, Patio, Presidential Suite', 2, 0, 5420);
 
 -- --------------------------------------------------------
 
@@ -205,7 +216,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `BOOKING_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `BOOKING_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -217,7 +228,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `ROOM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ROOM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `roomtype`
