@@ -22,8 +22,8 @@
     <body>
         <c:import url="topNav.jsp"/>
         <div class="container-fluid text-center p-4" style="background:lightgray">
-            <table class="table">
-                <tr>
+            <table class="table table-striped table-hover">
+                <tr class="table-primary">
                     <th>Invoice No</th>
                     <th>Guest Name</th>
                     <th>Pax</th>
