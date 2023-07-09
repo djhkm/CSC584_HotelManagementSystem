@@ -21,8 +21,9 @@
     </head>
     <body>
         <c:import url="topNav.jsp"/>
-        <div class="container-fluid text-center p-4" style="background:lightgray">
-            <table class="table table-striped table-hover">
+        <div class="container-fluid p-4">
+            <p><a class="link-secondary" href="dashboard.jsp">Room & Suite Status</a> | <a class="link-secondary" href="./SalesReport"><b>Sales Report</b></a></p>
+            <table class="table table-striped table-hover text-center table-bordered">
                 <tr class="table-primary">
                     <th>Invoice No</th>
                     <th>Guest Name</th>
