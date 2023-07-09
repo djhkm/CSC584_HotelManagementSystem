@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
                 users = new Users(user_id, username, password, Integer.parseInt(statusA));
                 HttpSession session = request.getSession();
                 session.setAttribute("user", users);
-                request.setAttribute("successMessage", statusA);
+                //request.setAttribute("successMessage", statusA);
                 request.getRequestDispatcher("dashboard.jsp").forward(request, response);
             }
             else if (statusA.equals("2")) {
@@ -63,7 +63,7 @@ public class LoginServlet extends HttpServlet {
                 users = new Users(user_id, username, password, Integer.parseInt(statusA));
                 HttpSession session = request.getSession();
                 session.setAttribute("user", users);
-                request.setAttribute("successMessage", statusA);
+                //request.setAttribute("successMessage", statusA);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             } else {
                 request.setAttribute("errMessage", statusA);
