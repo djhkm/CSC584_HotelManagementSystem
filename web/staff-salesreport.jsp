@@ -32,6 +32,7 @@
                     <th>Check In</th>
                     <th>Check Out</th>
                     <th>Total</th>
+                    <th>Action</th>
                 </tr>
                 <c:forEach items="${requestScope.bookingList}" var="booking">
                     <tr>
@@ -42,6 +43,12 @@
                         <td><c:out value="${booking.getBooking_checkindate()}"/></td>
                         <td><c:out value="${booking.getBooking_checkoutdate()}"/></td>
                         <td><c:out value="${booking.getBooking_totalfee()}"/></td>
+                        <td>
+                            <form action="./DeleteBookingServlet" method="post">
+                                <input type="hidden" name="bookingID" value="<c:out value="${booking.getBooking_id()}"/>"/>
+                                <button class="btn btn-danger" onclick="this.form.submit()">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

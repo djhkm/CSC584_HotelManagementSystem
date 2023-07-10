@@ -5,11 +5,9 @@
  */
 package com.mvc.controller;
 
-import com.mvc.bean.Booking;
 import com.mvc.dao.BookingDAO;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author haziq
  */
-public class SalesReportServlet extends HttpServlet {
+public class DeleteBookingServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,17 +30,6 @@ public class SalesReportServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        BookingDAO dao = new BookingDAO();
-        List<Booking> array;
-        array = dao.getAllBooking();
-        
-        String deleteStatus = (String) request.getAttribute("status");
-        //System.out.println("receiving attribute " + deleteStatus);
-        
-        request.setAttribute("message", deleteStatus);
-        request.setAttribute("bookingList", array);
-        request.getRequestDispatcher("staff-salesreport.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -73,7 +60,23 @@ public class SalesReportServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        
+        BookingDAO dao = new BookingDAO();
+        String idString = request.getParameter("bookingID");
+        //System.out.println("idstring is " + idString);
+        if(idString != null){
+            int bookingID = Integer.parseInt(idString);
+            boolean result = dao.deleteBooking(bookingID);
+            String message;
+            if(result){
+                message = "Booking successfully deleted.";
+            }else{
+                message = "An error occurred while deleting booking.";
+            }
+            
+            //System.out.println("DeleteBookingServlet sending status message : " + message);
+            request.setAttribute("status", message);
+        }
+        request.getRequestDispatcher("/SalesReport").forward(request, response);
     }
 
     /**
