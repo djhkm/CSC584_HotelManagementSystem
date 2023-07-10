@@ -11,12 +11,15 @@ import java.sql.Connection;
 import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -151,5 +154,20 @@ public class BookingDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    // using boolean to signify if query is successful or not, can change to string if u want
+    public boolean deleteBooking(int bookingID){
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM booking WHERE booking_id = ?");
+            ps.setInt(1, bookingID);
+            ps.executeUpdate();
+            ps.close();
+            return true;
+        } catch (SQLException ex) {
+            //Logger.getLogger(BookingDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+        return false;
     }
 }
