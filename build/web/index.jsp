@@ -66,16 +66,16 @@
             <h3>Rooms and Suites</h3>
             <div class="row justify-content-center">
                 <div class="col-2 border">
-                    <img class="img-fluid" src="1-guesttwins.jpg"/>
+                    <img class="img-thumbnail" src="5.jpg" style="max-width: 250px;"/>
                 </div>
                 <div class="col-2 border offset-1">
-                    <img class="img-fluid" src="2-guestking.jpg"/>
+                    <img class="img-thumbnail" src="4.jpg" style="max-width: 250px;"/>
                 </div>
                 <div class="col-2 border offset-1">
-                    <img class="img-fluid" src="3-executiveking.jpg"/>
+                    <img class="img-thumbnail" src="3.jpg" style="max-width: 250px;"/>
                 </div>
                 <div class="col-2 border offset-1">
-                    <img class="img-fluid" src="4-presidential.jpg"/>
+                    <img class="img-thumbnail" src="2.jpg" style="max-width: 250px;"/>
                 </div>
             </div>
         </div>

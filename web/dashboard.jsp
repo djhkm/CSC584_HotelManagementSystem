@@ -3,6 +3,13 @@
     Created on : Jul 9, 2023, 4:59:11 PM
     Author     : haziq
 --%>
+<%@page import="java.time.ZoneId"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="com.mvc.dao.BookingDAO"%>
+<%@page import="com.mvc.bean.Booking"%>
+<%@include file="checkSession.jsp" %>
 <%@page import="java.util.LinkedList"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.mvc.bean.Room"%>
@@ -61,9 +68,20 @@
         }
         
         // set as request attribute to make it available for jstl
-        request.setAttribute("guestRooms", guestRooms);
+//        request.setAttribute("guestRooms", guestRooms);
         request.setAttribute("executiveRooms", executiveRooms);
         request.setAttribute("presidentialRooms", presidentialRooms);
+        
+        LocalDate date = LocalDate.now();
+        Date today_date = Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String todayDateString = formatter.format(today_date);
+        
+        SimpleDateFormat formatter2 = new SimpleDateFormat("E, dd MMMM yyyy");
+        
+        Booking b = new Booking();
+        BookingDAO bdao = new BookingDAO();
+        List<Booking> occupiedList = bdao.occupiedRoomWithTodayDate(todayDateString);
         %>
         <c:import url="topNav.jsp"/>
         <div class="container-fluid p-4">
@@ -84,62 +102,49 @@
                                     <th>Room Type (Max pax)</th>
                                     <th>Status</th>
                                 </tr>
-                                <c:forEach items="${guestRooms}" var="roomRow">
-                                    <tr>
-                                        <td><c:out value="${roomRow.getRoom_number()}"/></td>
-                                        <td>
-                                            <c:if test="${roomRow.getRoom_roomtype_id() == 1}">
-                                                2 Twin (3 pax)
-                                            </c:if>
-                                            <c:if test="${roomRow.getRoom_roomtype_id() == 2}">
-                                                1 King (2 pax)
-                                            </c:if>    
-                                        </td>
-                                        <td>
-                                            <div class="container rounded text-center 
-                                                 <c:if test="${roomRow.getRoom_status().equals(\"Available\")}">
-                                                     room-available
-                                                 </c:if>
-                                                 <c:if test="${roomRow.getRoom_status().equals(\"Needs Cleaning\")}">
-                                                     room-needs-cleaning
-                                                 </c:if>
-                                                 <c:if test="${roomRow.getRoom_status().equals(\"Occupied\")}">
-                                                     room-occupied
-                                                 </c:if>
-                                                 ">
-                                                <form method="post" action="./DashboardServlet">
-                                                    <input type="hidden" name="room_id" value="<c:out value="${roomRow.getRoom_id()}"/>">
-                                                    <select name="status" class="form-select bg-transparent border-0" onchange="this.form.submit()">
-                                                        <option 
-                                                            <c:if test="${roomRow.getRoom_status().equals(\"Available\")}">
-                                                                selected
-                                                            </c:if>
-                                                            value="Available"
-                                                            >
-                                                            Available
-                                                        </option>
-                                                        <option 
-                                                            <c:if test="${roomRow.getRoom_status().equals(\"Needs Cleaning\")}">
-                                                                selected
-                                                            </c:if>
-                                                            value="Needs Cleaning"
-                                                            >
-                                                            Needs Cleaning
-                                                        </option>
-                                                        <option 
-                                                            <c:if test="${roomRow.getRoom_status().equals(\"Occupied\")}">
-                                                                selected
-                                                            </c:if>
-                                                            value="Occupied"
-                                                            >
-                                                            Occupied
-                                                        </option>
-                                                    </select>
-                                                </form>                                                   
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                                <% 
+                                    int occupiedFlag = 0;
+                                    String endDateOccupied = "";
+                                    for (Room guest : guestRooms) {
+                                        occupiedFlag = 0;
+                                        for (Booking book : occupiedList) {
+                                            if (book.getBooking_room_id() == guest.getRoom_id()) {
+                                                occupiedFlag = 1;
+                                                Date occupied_date = formatter.parse(book.getBooking_checkoutdate());
+                                                endDateOccupied = formatter2.format(occupied_date);
+                                            }
+                                        }
+                                %>
+                                <tr>
+                                    <td style="width: 20%;"><%= guest.getRoom_number() %></td>
+                                    <td style="width: 30%;">
+                                        <% if (guest.getRoom_roomtype_id() == 1) { %>2 Twin (3 pax)<% } %>
+                                        <% if (guest.getRoom_roomtype_id() == 2) { %>1 King (2 pax)<% } %>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <div class="container rounded text-center <% if (occupiedFlag == 1) { %>room-occupied<% } else { %><% if (guest.getRoom_status().equals("Available")) { %>room-available<% } %> <% if (guest.getRoom_status().equals("Needs Cleaning")) { %>room-needs-cleaning<% } %> <% if (guest.getRoom_status().equals("Occupied")) { %>room-occupied<% } %>" id="<%= guest.getRoom_id() %><% } %>">
+                                            <form method="post" action="./DashboardServlet">
+                                                <input type="hidden" name="room_id" value="<%= guest.getRoom_id() %>">
+                                                <select name="status" class="form-select bg-transparent border-0" onchange="this.form.submit()" <% if (occupiedFlag == 1) { %> disabled <% } %>>
+                                                    <% if (occupiedFlag == 1) { %>
+                                                    <option>Occupied until&nbsp;<%= endDateOccupied %></option>
+                                                    <% } else { %>
+                                                    <option <% if (guest.getRoom_status().equals("Available")) { %>Selected<% } %> value="Available">
+                                                        Available
+                                                    </option>
+                                                    <option <% if (guest.getRoom_status().equals("Needs Cleaning")) { %>Selected<% } %> value="Needs Cleaning">
+                                                        Needs Cleaning
+                                                    </option>
+                                                    <option <% if (guest.getRoom_status().equals("Occupied")) { %>Selected<% } %> value="Occupied">
+                                                        Occupied
+                                                    </option>
+                                                    <% } %>
+                                                </select>
+                                            </form>                                                   
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% } %>
                             </table>
                         </div>
                     </div>
@@ -161,62 +166,45 @@
                                     <th>Room Type (Max pax)</th>
                                     <th>Status</th>
                                 </tr>
-                                <c:forEach items="${executiveRooms}" var="roomRow">
-                                    <tr>
-                                        <td><c:out value="${roomRow.getRoom_number()}"/></td>
-                                        <td>
-                                            <c:if test="${roomRow.getRoom_roomtype_id() == 3}">
-                                                2 Twin (3 pax)
-                                            </c:if>
-                                            <c:if test="${roomRow.getRoom_roomtype_id() == 4}">
-                                                1 King (3 pax)
-                                            </c:if>
-                                        </td>
-                                        <td>
-                                            <div class="container rounded text-center 
-                                                 <c:if test="${roomRow.getRoom_status().equals(\"Available\")}">
-                                                     room-available
-                                                 </c:if>
-                                                 <c:if test="${roomRow.getRoom_status().equals(\"Needs Cleaning\")}">
-                                                     room-needs-cleaning
-                                                 </c:if>
-                                                 <c:if test="${roomRow.getRoom_status().equals(\"Occupied\")}">
-                                                     room-occupied
-                                                 </c:if>
-                                                 ">
-                                                <form method="post" action="./DashboardServlet">
-                                                    <input type="hidden" name="room_id" value="<c:out value="${roomRow.getRoom_id()}"/>">
-                                                    <select name="status" class="form-select bg-transparent border-0" onchange="this.form.submit()">
-                                                        <option 
-                                                            <c:if test="${roomRow.getRoom_status().equals(\"Available\")}">
-                                                                selected
-                                                            </c:if>
-                                                            value="Available"
-                                                            >
-                                                            Available
-                                                        </option>
-                                                        <option 
-                                                            <c:if test="${roomRow.getRoom_status().equals(\"Needs Cleaning\")}">
-                                                                selected
-                                                            </c:if>
-                                                            value="Needs Cleaning"
-                                                            >
-                                                            Needs Cleaning
-                                                        </option>
-                                                        <option 
-                                                            <c:if test="${roomRow.getRoom_status().equals(\"Occupied\")}">
-                                                                selected
-                                                            </c:if>
-                                                            value="Occupied"
-                                                            >
-                                                            Occupied
-                                                        </option>
-                                                    </select>
-                                                </form>       
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                                <% 
+                                    for (Room guest : executiveRooms) {
+                                        occupiedFlag = 0;
+                                        for (Booking book : occupiedList) {
+                                            if (book.getBooking_room_id() == guest.getRoom_id()) {
+                                                occupiedFlag = 1;
+                                            }
+                                        }
+                                %>
+                                <tr>
+                                    <td style="width: 20%;"><%= guest.getRoom_number() %></td>
+                                    <td style="width: 30%;">
+                                        <% if (guest.getRoom_roomtype_id() == 3) { %>2 Twin (3 pax)<% } %>
+                                        <% if (guest.getRoom_roomtype_id() == 4) { %>1 King (3 pax)<% } %>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <div class="container rounded text-center <% if (occupiedFlag == 1) { %>room-occupied<% } else { %><% if (guest.getRoom_status().equals("Available")) { %>room-available<% } %> <% if (guest.getRoom_status().equals("Needs Cleaning")) { %>room-needs-cleaning<% } %> <% if (guest.getRoom_status().equals("Occupied")) { %>room-occupied<% } %>" id="<%= guest.getRoom_id() %><% } %>">
+                                            <form method="post" action="./DashboardServlet">
+                                                <input type="hidden" name="room_id" value="<%= guest.getRoom_id() %>">
+                                                <select name="status" class="form-select bg-transparent border-0" onchange="this.form.submit()" <% if (occupiedFlag == 1) { %> disabled <% } %>>
+                                                    <% if (occupiedFlag == 1) { %>
+                                                    <option>Occupied until&nbsp;<%= endDateOccupied %></option>
+                                                    <% } else { %>
+                                                    <option <% if (guest.getRoom_status().equals("Available")) { %>Selected<% } %> value="Available">
+                                                        Available
+                                                    </option>
+                                                    <option <% if (guest.getRoom_status().equals("Needs Cleaning")) { %>Selected<% } %> value="Needs Cleaning">
+                                                        Needs Cleaning
+                                                    </option>
+                                                    <option <% if (guest.getRoom_status().equals("Occupied")) { %>Selected<% } %> value="Occupied">
+                                                        Occupied
+                                                    </option>
+                                                    <% } %>
+                                                </select>
+                                            </form>                                                   
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% } %>
                             </table>
                         </div>
                     </div>
@@ -238,62 +226,54 @@
                                     <th>Room Type (Max pax)</th>
                                     <th>Status</th>
                                 </tr>
-                                <c:forEach items="${presidentialRooms}" var="roomRow">
-                                    <tr>
-                                        <td><c:out value="${roomRow.getRoom_number()}"/></td>
-                                        <td>
-                                            1 King (2 max)
-                                        </td>
-                                        <td>
-                                            <div class="container rounded text-center 
-                                                 <c:if test="${roomRow.getRoom_status().equals(\"Available\")}">
-                                                     room-available
-                                                 </c:if>
-                                                 <c:if test="${roomRow.getRoom_status().equals(\"Needs Cleaning\")}">
-                                                     room-needs-cleaning
-                                                 </c:if>
-                                                 <c:if test="${roomRow.getRoom_status().equals(\"Occupied\")}">
-                                                     room-occupied
-                                                 </c:if>
-                                                 ">
-                                                <form method="post" action="./DashboardServlet">
-                                                    <input type="hidden" name="room_id" value="<c:out value="${roomRow.getRoom_id()}"/>">
-                                                    <select name="status" class="form-select bg-transparent border-0" onchange="this.form.submit()">
-                                                        <option 
-                                                            <c:if test="${roomRow.getRoom_status().equals(\"Available\")}">
-                                                                selected
-                                                            </c:if>
-                                                            value="Available"
-                                                            >
-                                                            Available
-                                                        </option>
-                                                        <option 
-                                                            <c:if test="${roomRow.getRoom_status().equals(\"Needs Cleaning\")}">
-                                                                selected
-                                                            </c:if>
-                                                            value="Needs Cleaning"
-                                                            >
-                                                            Needs Cleaning
-                                                        </option>
-                                                        <option 
-                                                            <c:if test="${roomRow.getRoom_status().equals(\"Occupied\")}">
-                                                                selected
-                                                            </c:if>
-                                                            value="Occupied"
-                                                            >
-                                                            Occupied
-                                                        </option>
-                                                    </select>
-                                                </form>       
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                                <% 
+                                    for (Room guest : presidentialRooms) {
+                                        occupiedFlag = 0;
+                                        for (Booking book : occupiedList) {
+                                            if (book.getBooking_room_id() == guest.getRoom_id()) {
+                                                occupiedFlag = 1;
+                                            }
+                                        }
+                                %>
+                                <tr>
+                                    <td style="width: 20%;"><%= guest.getRoom_number() %></td>
+                                    <td style="width: 30%;">
+                                        1 King (2 max)
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <div class="container rounded text-center <% if (occupiedFlag == 1) { %>room-occupied<% } else { %><% if (guest.getRoom_status().equals("Available")) { %>room-available<% } %> <% if (guest.getRoom_status().equals("Needs Cleaning")) { %>room-needs-cleaning<% } %> <% if (guest.getRoom_status().equals("Occupied")) { %>room-occupied<% } %>" id="<%= guest.getRoom_id() %><% } %>">
+                                            <form method="post" action="./DashboardServlet">
+                                                <input type="hidden" name="room_id" value="<%= guest.getRoom_id() %>">
+                                                <select name="status" class="form-select bg-transparent border-0" onchange="this.form.submit()" <% if (occupiedFlag == 1) { %> disabled <% } %>>
+                                                    <% if (occupiedFlag == 1) { %>
+                                                    <option>Occupied until&nbsp;<%= endDateOccupied %></option>
+                                                    <% } else { %>
+                                                    <option <% if (guest.getRoom_status().equals("Available")) { %>Selected<% } %> value="Available">
+                                                        Available
+                                                    </option>
+                                                    <option <% if (guest.getRoom_status().equals("Needs Cleaning")) { %>Selected<% } %> value="Needs Cleaning">
+                                                        Needs Cleaning
+                                                    </option>
+                                                    <option <% if (guest.getRoom_status().equals("Occupied")) { %>Selected<% } %> value="Occupied">
+                                                        Occupied
+                                                    </option>
+                                                    <% } %>
+                                                </select>
+                                            </form>                                                   
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% } %>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <c:if test="${requestScope.editHREF != null}">
+        <script>
+            window.location.href = "dashboard.jsp#<c:out value="${requestScope.editHREF}"/>";
+        </script>
+        </c:if>
     </body>
 </html>

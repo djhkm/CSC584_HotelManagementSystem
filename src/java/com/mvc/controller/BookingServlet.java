@@ -53,6 +53,8 @@ public class BookingServlet extends HttpServlet {
             if (booking_room_id_2 != 0) { booking_room_id_list.add(booking_room_id_2); }
             if (booking_room_id_3 != 0) { booking_room_id_list.add(booking_room_id_3); }
             
+            booking_totalfee = booking_totalfee / booking_room_id_list.size();
+            
             int successA = 0;
             String invoiceNumber = "";
             
@@ -70,7 +72,6 @@ public class BookingServlet extends HttpServlet {
             for (int i = 1; i <= booking_room_id_list.size(); i++) {
                 b.setBooking_room_id(booking_room_id_list.get(i - 1));
                 String statusA = bdao.addBooking(b);
-                System.out.println(statusA);
                 if (!statusA.equals("Add booking failed")) {
                     successA++;
                     invoiceNumber = invoiceNumber.concat(statusA);

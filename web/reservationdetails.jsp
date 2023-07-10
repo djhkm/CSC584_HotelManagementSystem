@@ -1,3 +1,4 @@
+<%@include file="checkSession.jsp" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="com.mvc.dao.RoomDAO"%>

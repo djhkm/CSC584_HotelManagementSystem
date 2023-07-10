@@ -3,6 +3,7 @@
     Created on : Jul 8, 2023, 10:47:31 AM
     Author     : haziq
 --%>
+<%@include file="checkSession.jsp" %>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -44,9 +45,9 @@
                         <td><c:out value="${booking.getBooking_checkoutdate()}"/></td>
                         <td><c:out value="${booking.getBooking_totalfee()}"/></td>
                         <td>
-                            <form action="./DeleteBookingServlet" method="post">
+                            <form action="DeleteBookingServlet" method="post">
                                 <input type="hidden" name="bookingID" value="<c:out value="${booking.getBooking_id()}"/>"/>
-                                <button class="btn btn-danger" onclick="this.form.submit()">Delete</button>
+                                <button class="btn btn-danger" onclick="confirm('Delete invoice <c:out value="${booking.getInvoice_number()}"/> data?')" type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>

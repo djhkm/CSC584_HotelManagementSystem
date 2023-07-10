@@ -18,8 +18,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -125,7 +123,7 @@ public class BookingDAO {
                     + "ROOM_NUMBER "
                     + "FROM booking b "
                     + "INNER JOIN customer c ON c.CUSTOMER_ID = b.CUSTOMER_ID "
-                    + "INNER JOIN ROOM r ON r.ROOM_ID = b.ROOM_ID";
+                    + "INNER JOIN ROOM r ON r.ROOM_ID = b.ROOM_ID ORDER BY INVOICE_NUMBER";
             
             s = conn.createStatement();
             rs = s.executeQuery(query);
@@ -169,5 +167,44 @@ public class BookingDAO {
             System.out.println(ex);
         }
         return false;
+    }
+    
+    public List<Booking> occupiedRoomWithTodayDate(String todayDate) {
+        List<Booking> bookings = new ArrayList();
+        
+        try {
+            Statement s;
+            ResultSet rs;
+            
+            String query = "SELECT BOOKING.*, ROOM.ROOM_STATUS FROM BOOKING INNER JOIN ROOM ON BOOKING.ROOM_ID = room.ROOM_ID WHERE BOOKING_CHECKINDATE <= '" + todayDate + "' AND BOOKING_CHECKOUTDATE >= '" + todayDate + "' AND ROOM_STATUS = 'Available'";
+            
+            s = conn.createStatement();
+            rs = s.executeQuery(query);
+            
+            SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd / MM / yyyy");
+            
+            while (rs.next()) {
+                int booking_id = rs.getInt("BOOKING_ID");
+                String invoice_number = rs.getString("INVOICE_NUMBER");
+                String booking_date = formatter.format(parser.parse(rs.getString("BOOKING_DATE")));
+                int booking_pax = rs.getInt("BOOKING_PAX");
+                int booking_dayofstay = rs.getInt("BOOKING_DAYSOFSTAY");
+                String booking_checkindate = formatter.format(parser.parse(rs.getString("BOOKING_CHECKINDATE")));
+                String booking_checkoutdate = parser.format(parser.parse(rs.getString("BOOKING_CHECKOUTDATE")));
+                double booking_totalfee = rs.getDouble("BOOKING_TOTALFEE");
+                int booking_customer_id = rs.getInt("CUSTOMER_ID");
+                int booking_room_id = rs.getInt("ROOM_ID");
+                String room_status = rs.getString("ROOM_STATUS");
+                
+                Booking b = new Booking(booking_id, invoice_number, booking_date, booking_pax, booking_dayofstay, booking_checkindate, booking_checkoutdate, booking_totalfee, booking_customer_id, booking_room_id, room_status);
+                bookings.add(b);
+            }
+            //conn.close();
+            return bookings;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

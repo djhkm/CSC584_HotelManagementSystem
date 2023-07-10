@@ -23,6 +23,7 @@ public class Booking {
     
     private String customerName;
     private int roomNumber;
+    private String roomStatus;
 
     public Booking() {
     }
@@ -54,8 +55,20 @@ public class Booking {
         this.roomNumber = roomNumber;
     }
     
-    
-    
+    // used in DAO's occupiedRoomWithTodayDate(), uses customer name and room number instead of ID
+    public Booking(int booking_id, String invoice_number, String booking_date, int booking_pax, int booking_dayofstay, String booking_checkindate, String booking_checkoutdate, double booking_totalfee, int booking_customer_id, int booking_room_id, String roomStatus) {
+        this.booking_id = booking_id;
+        this.invoice_number = invoice_number;
+        this.booking_date = booking_date;
+        this.booking_pax = booking_pax;
+        this.booking_dayofstay = booking_dayofstay;
+        this.booking_checkindate = booking_checkindate;
+        this.booking_checkoutdate = booking_checkoutdate;
+        this.booking_totalfee = booking_totalfee;
+        this.booking_customer_id = booking_customer_id;
+        this.booking_room_id = booking_room_id;
+        this.roomStatus = roomStatus;
+    }    
 
     public int getBooking_id() {
         return booking_id;
@@ -153,5 +166,11 @@ public class Booking {
         this.roomNumber = roomNumber;
     }
     
-    
+    public String getRoomStatus() {
+        return roomStatus;
+    }
+
+    public void setRoomStatus(String roomStatus) {
+        this.roomStatus = roomStatus;
+    }
 }

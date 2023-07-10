@@ -20,6 +20,14 @@
         <servlet-name>BookingServlet</servlet-name>
         <servlet-class>com.mvc.controller.BookingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.mvc.controller.DashboardServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteBookingServlet</servlet-name>
+        <servlet-class>com.mvc.controller.DeleteBookingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterCustomerServlet</servlet-name>
         <url-pattern>/RegisterCustomerServlet</url-pattern>
@@ -39,6 +47,14 @@
     <servlet-mapping>
         <servlet-name>BookingServlet</servlet-name>
         <url-pattern>/BookingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/DashboardServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteBookingServlet</servlet-name>
+        <url-pattern>/DeleteBookingServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

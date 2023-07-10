@@ -69,6 +69,7 @@ public class DashboardServlet extends HttpServlet {
         RoomDAO dao = new RoomDAO();
         dao.changeRoomStatus(status, roomID);
         
+        request.setAttribute("editHREF", roomID);
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
 

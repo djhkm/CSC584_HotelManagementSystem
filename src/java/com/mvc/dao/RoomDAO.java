@@ -55,6 +55,35 @@ public class RoomDAO {
         return null;
     }
     
+    public List<Room> occupiedRoomWithTodayDate(String todayDate) {
+        List<Room> rooms = new ArrayList();
+        
+        try {
+            Statement s;
+            ResultSet rs;
+            
+            String query = "SELECT ROOM_ID FROM ROOM WHERE ROOM_ID IN (SELECT ROOM_ID FROM BOOKING WHERE BOOKING_CHECKINDATE <= '" + todayDate + "' AND BOOKING_CHECKOUTDATE >= '" + todayDate + "') AND ROOM_STATUS = 'Available'";
+            
+            s = conn.createStatement();
+            rs = s.executeQuery(query);
+            
+            while (rs.next()) {
+                int room_id = rs.getInt("ROOM_ID");
+                int room_number = rs.getInt("ROOM_NUMBER");
+                String room_status = rs.getString("ROOM_STATUS");
+                int room_roomtype_id = rs.getInt("ROOMTYPE_ID");
+                
+                Room r = new Room(room_id, room_number, room_status, room_roomtype_id);
+                rooms.add(r);
+            }
+            //conn.close();
+            return rooms;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public String changeRoomStatus(String room_status, int room_id) { //for staff
         
         try {
