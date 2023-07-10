@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,6 @@ public class BookingDAO {
     Connection conn = DBConnection.createConnection();
     
     public String addBooking(Booking booking) {
-        String invoice_number = booking.getInvoice_number(); //Example: INV2312121
         int booking_pax = booking.getBooking_pax();
         int booking_dayofstay = booking.getBooking_dayofstay();
         String booking_checkindate = booking.getBooking_checkindate();
@@ -38,9 +38,12 @@ public class BookingDAO {
         int booking_customer_id = booking.getBooking_customer_id();
         int booking_room_id = booking.getBooking_room_id();
         
+        String invoice_number = generateInvoiceNumber(); //Example: INV2312121
+        
         LocalDate date = LocalDate.now();
+        Date today_date = Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String booking_date = formatter.format(date);
+        String booking_date = formatter.format(today_date);
         
         try {
             PreparedStatement ps;
@@ -59,7 +62,7 @@ public class BookingDAO {
             ps.setInt(9, booking_room_id);
             ps.executeUpdate();
             //conn.close();
-            return "Add booking success";
+            return invoice_number;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,8 +71,9 @@ public class BookingDAO {
     
     public String generateInvoiceNumber() {
         LocalDate date = LocalDate.now();
+        Date today_date = Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
-        String booking_date = formatter.format(date);
+        String booking_date = formatter.format(today_date);
         int startCode = 1;
         int proceed = 1;        
         String compiledIN = "";

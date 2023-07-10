@@ -18,6 +18,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        <!-- fontawasome icon -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
         <c:import url="topNav.jsp"/>
@@ -121,6 +123,42 @@
         <script>
             $(document).ready(function () {
                 $('#loginModal').modal('show');
+            });
+        </script>
+        </c:if>
+        <c:if test="${requestScope.errMessageFromPage != null}">
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="15000">
+                <div class="toast-header bg-danger">
+                    <strong class="me-auto text-white">Error</strong>
+                    <button type="button" class="btn-close btn-light" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body"><c:out value="${requestScope.errMessageFromPage}"/></div>  
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#liveToast').toast('show');
+            });
+        </script>
+        </c:if>
+        <c:if test="${requestScope.successMessageBooking != null}">
+        <div class="modal fade" tabindex="-1" id="bookingModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-body-secondary">
+                        <h3 class="modal-title">Booking Success&nbsp;&nbsp;<i class="fa-solid fa-check fa-xl" style="color: #00ff00;"></i></h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="fw-normal">Your booking for <span class="fw-bold"><c:out value="${requestScope.successMessageBooking}"/></span> has been successfully recorded. Please save the invoice number for future reference.&nbsp;<i class="fa-regular fa-face-smile-beam"></i></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#bookingModal').modal('show');
             });
         </script>
         </c:if>

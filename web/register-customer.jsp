@@ -33,7 +33,6 @@
         </jsp:include>
         <div class="container mt-4">
             <h1>Account Registration</h1>
-            <a href="index.jsp">Back</a>
             <br><br>
             <form action="RegisterCustomerServlet" method="POST">
                 <table border="0" class="table">
@@ -90,7 +89,10 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                    <center><input class="btn btn-primary" type="submit" name="Register" value="Register"></center>
+                                <center>
+                                    <a class="btn btn-secondary me-1" href="index.jsp">Back</a>
+                                    <input class="btn btn-primary" type="submit" name="Register" value="Register">
+                                </center>
                             </td>
                         </tr>
                     </tbody>

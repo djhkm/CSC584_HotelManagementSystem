@@ -21,7 +21,7 @@ public class CustomerDAO {
     Connection conn = DBConnection.createConnection();
     
     // add new customer data
-    public String registerCustomerData (Customer customer) {
+    public String registerCustomerData(Customer customer) {
         String customer_honorific = customer.getCustomer_honorific();
         String customer_name = customer.getCustomer_name();
         String customer_email = customer.getCustomer_email();
@@ -48,7 +48,7 @@ public class CustomerDAO {
         return "Registration failed";
     }
     
-    public Customer getCustomerDataUsingUserId (int user_id) {
+    public Customer getCustomerDataUsingUserId(int user_id) {
         
         try {
             Statement s;

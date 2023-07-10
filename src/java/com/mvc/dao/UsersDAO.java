@@ -25,7 +25,7 @@ public class UsersDAO {
     Connection conn = DBConnection.createConnection();
     
     // find existing username
-    public String findExistingUsername (String username) {
+    public String findExistingUsername(String username) {
         
         try {            
             Statement s;
@@ -47,7 +47,7 @@ public class UsersDAO {
     }
     
     // find user id
-    public int findUserId (String username) {
+    public int findUserId(String username) {
         
         try {
             Statement s;
@@ -70,7 +70,7 @@ public class UsersDAO {
     }
     
     // add new user data
-    public String addUser (Users users) {
+    public String addUser(Users users) {
         String username = users.getUsername();
         String password = users.getPassword();
         int user_type = users.getUser_type();

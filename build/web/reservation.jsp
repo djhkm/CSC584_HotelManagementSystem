@@ -1,3 +1,4 @@
+<%@include file="checkSession.jsp" %>
 <%@page import="com.mvc.bean.RoomType"%>
 <%@page import="com.mvc.dao.RoomDAO"%>
 <%@page import="com.mvc.bean.Room"%>
@@ -43,16 +44,20 @@
             int guestCount = Integer.parseInt(request.getParameter("guestCount"));
             int newGuestCount = guestCount / roomCount;
             
-            if ((dateStart.compareTo(today_date) < 0) || (dateEnd.compareTo(dateStart) < 0) || roomCount == 0 || guestCount == 0) {
+            if ((dateStart.compareTo(today_date) < 0) || (dateEnd.compareTo(dateStart) < 0) || (dateStart.compareTo(dateEnd) == 0)) {
+                request.setAttribute("errMessageFromPage", "Invalid date range or format, Please try again");
     %>
-    <script>
-        location.href="index.jsp";
-    </script>
+    <%@include file="checkPageError.jsp"%>
+    <%
+            } else if (roomCount == 0 || guestCount == 0) {
+                request.setAttribute("errMessageFromPage", "Invalid room or guest number, Please try again");
+    %>
+    <%@include file="checkPageError.jsp"%>
     <%
             }            
     %>
     
-    <body>
+    <body class="bg-body-secondary">
         <c:import url="topNav.jsp"/>
         <div style="text-align: center;">
             <h1>Search Result</h1>
@@ -66,14 +71,14 @@
                 <div class="row justify-content-center">
                     <div class="col-md-2 d-flex justify-content-end align-items-center">
                         <!--<input class="form-control" type="date" name="dateStart"/>-->
-                        <% out.print(stringDateStart); %>
+                        <%= stringDateStart %>
                     </div>
                     <div class="col-md-auto d-flex align-items-center">
                         &rarr;
                     </div>
                     <div class="col-md-2 d-flex justify-content-start align-items-center border-right">
                         <!--<input class="form-control" type="date" name="dateEnd"/>-->
-                        <% out.print(stringDateEnd); %>
+                        <%= stringDateEnd %>
                     </div>
                     <div class="col-md-1 d-flex justify-content-end align-items-center">
                         <!--<input class="form-control" type="number" name="roomCount" min="1" max="3" value="1"/>-->
@@ -118,8 +123,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 d-flex justify-content-between">
-                            <h4 class="mb-0"><% out.print(rtvalue.getRoom_description()); %></h4>
-                            <p class="mb-0"><% out.print(rooms.size()); %> Room(s) Available</p>
+                            <h4 class="mb-0"><%= rtvalue.getRoom_description() %></h4>
+                            <p class="mb-0"><%= rooms.size() %> Room(s) Available</p>
                         </div>
                     </div>
                 </div>
@@ -127,15 +132,15 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-4 d-flex align-items-end">
-                            <img class="img-thumbnail" src="<% out.print(rtvalue.getRoomtype_id()); %>.jpg" style="max-width: 250px;">
+                            <img class="img-thumbnail" src="<%= rtvalue.getRoomtype_id() %>.jpg" style="max-width: 250px;">
                             <% for (int i = 0; i < rtvalue.getRoom_maxpax(); i++) { %><i class="pb-1 fa-solid fa-person"></i><% } %>
                         </div>
                         <div class="col-4 d-flex justify-content-center align-items-center">
-                            <h3><% out.print((int) rtvalue.getRoom_price()); %></h3>
+                            <h3><%= (int)rtvalue.getRoom_price() %></h3>
                             <small class="pt-1">&nbsp;MYR / night</small>
                         </div>
                         <div class="col-4 text-end d-flex justify-content-end align-items-center">
-                            <a class="btn btn-primary" href="reservationdetails.jsp?dateStart=<c:out value="${param.dateStart}"></c:out>&dateEnd=<c:out value="${param.dateEnd}"></c:out>&roomCount=<c:out value="${param.roomCount}"></c:out>&guestCount=<c:out value="${param.guestCount}"></c:out>&roomType=<% out.print(rtvalue.getRoomtype_id()); %>">Select</a>
+                            <a class="btn btn-primary" href="reservationdetails.jsp?dateStart=<c:out value="${param.dateStart}"></c:out>&dateEnd=<c:out value="${param.dateEnd}"></c:out>&roomCount=<c:out value="${param.roomCount}"></c:out>&guestCount=<c:out value="${param.guestCount}"></c:out>&roomType=<%= rtvalue.getRoomtype_id() %>">Select</a>
                         </div>
                     </div>
                 </div>
@@ -167,10 +172,9 @@
     <%
         } catch (Exception e) {
             e.printStackTrace();
+            request.setAttribute("errMessageFromPage", "An error has occurred, Please try again");
     %>
-    <script>
-        location.href="index.jsp";
-    </script>
+    <%@include file="checkPageError.jsp"%>
     <%
         }
     %>
