@@ -3,6 +3,8 @@
     Created on : Jul 9, 2023, 4:59:11 PM
     Author     : haziq
 --%>
+<%@page import="com.mvc.dao.RoomTypeDAO"%>
+<%@page import="com.mvc.bean.RoomType"%>
 <%@page import="java.time.ZoneId"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
@@ -82,10 +84,51 @@
         Booking b = new Booking();
         BookingDAO bdao = new BookingDAO();
         List<Booking> occupiedList = bdao.occupiedRoomWithTodayDate(todayDateString);
+        
+        RoomType rt = new RoomType();
+        RoomTypeDAO rtdao = new RoomTypeDAO();
+        List<RoomType> roomTypeList = rtdao.getAllRoomType();
         %>
         <c:import url="topNav.jsp"/>
         <div class="container-fluid p-4">
-            <p><a class="link-secondary" href="dashboard.jsp"><b>Room & Suite Status</b></a> | <a class="link-secondary" href="./SalesReport">Sales Report</a></p>
+            <div class="d-flex justify-content-between mb-3">
+                <div>
+                    <p><a class="link-secondary" href="dashboard.jsp"><b>Room & Suite Status</b></a> | <a class="link-secondary" href="./SalesReport">Sales Report</a></p>
+                </div>
+                <div>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRoom">Add Room</button>
+                </div>
+            </div>
+            <div class="modal fade" id="addRoom" tabindex="-1" aria-labelledby="addRoomLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form action="LoginServlet" method="POST">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Add Room</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="roomNumber" class="form-label">Room Number</label>
+                                    <input type="text" name="room_number" class="form-control" id="roomNumber">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="roomType" class="form-label">Room Type</label>
+                                    <select class="form-select" name="room_type" id="roomType">
+                                        <% for (RoomType roomType : roomTypeList) { %>
+                                        <option value="<%= roomType.getRoomtype_id() %>"><%= roomType.getRoom_name() %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <!-- guest room accordion -->
             <div class="accordion" id="guestAccordion">
                 <div class="accordion-item">
@@ -172,6 +215,8 @@
                                         for (Booking book : occupiedList) {
                                             if (book.getBooking_room_id() == guest.getRoom_id()) {
                                                 occupiedFlag = 1;
+                                                Date occupied_date = formatter.parse(book.getBooking_checkoutdate());
+                                                endDateOccupied = formatter2.format(occupied_date);
                                             }
                                         }
                                 %>
@@ -232,6 +277,8 @@
                                         for (Booking book : occupiedList) {
                                             if (book.getBooking_room_id() == guest.getRoom_id()) {
                                                 occupiedFlag = 1;
+                                                Date occupied_date = formatter.parse(book.getBooking_checkoutdate());
+                                                endDateOccupied = formatter2.format(occupied_date);
                                             }
                                         }
                                 %>
