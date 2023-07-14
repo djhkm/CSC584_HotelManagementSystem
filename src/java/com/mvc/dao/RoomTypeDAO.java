@@ -8,6 +8,7 @@ package com.mvc.dao;
 import com.mvc.bean.RoomType;
 import com.mvc.util.DBConnection;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -81,5 +82,23 @@ public class RoomTypeDAO {
             
         }
         return null;
+    }
+    
+    public int updateRoomType(RoomType bean){
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE roomtype SET room_name = ?, room_description = ?, room_maxpax = ?, room_extrabedcount = ?, room_price = ? WHERE roomtype_id = ?");
+            ps.setString(1, bean.getRoom_name());
+            ps.setString(2, bean.getRoom_description());
+            ps.setInt(3, bean.getRoom_maxpax());
+            ps.setInt(4, bean.getRoom_extrabedcount());
+            ps.setDouble(5, bean.getRoom_price());
+            ps.setInt(6, bean.getRoomtype_id());
+            
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return -1;
     }
 }

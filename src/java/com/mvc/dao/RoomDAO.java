@@ -10,9 +10,12 @@ import com.mvc.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,6 +27,24 @@ public class RoomDAO {
     }
     
     Connection conn = DBConnection.createConnection();
+    
+    public Room getRoom(int roomid){
+        PreparedStatement ps;
+        try {
+            ps = conn.prepareStatement("SELECT room_number, room_status, roomtype_id FROM room WHERE room_id = ?");
+            ps.setInt(1, roomid);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return new Room(
+                    roomid,
+                    rs.getInt("room_number"),
+                    rs.getString("room_status"),
+                    rs.getInt("roomtype_id"));
+        } catch (SQLException ex) {
+            Logger.getLogger(RoomDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
     //for customer to check if the room is booked for a duration, get number of rooms available
     public List<Room> availableSameRoomTypeWithCheckInOutDate(String checkIn, String checkOut, int roomtype_id) { 
@@ -110,7 +131,7 @@ public class RoomDAO {
             Statement s;
             ResultSet rs;
             
-            String query = "SELECT * FROM ROOM";
+            String query = "SELECT * FROM ROOM ORDER BY room_number ASC";
             
             s = conn.createStatement();
             rs = s.executeQuery(query);
@@ -130,5 +151,31 @@ public class RoomDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public int updateRoom(Room room){
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE room SET room_number = ?, roomtype_id = ? WHERE room_id = ?");
+            ps.setInt(1, room.getRoom_number());
+            ps.setInt(2, room.getRoom_roomtype_id());
+            ps.setInt(3, room.getRoom_id());
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return -1;
+    }
+    
+    public int deleteRoom(int roomid){
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM room WHERE room_id = ?");
+            ps.setInt(1, roomid);
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return -1;
     }
 }
