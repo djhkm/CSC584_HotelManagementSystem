@@ -85,7 +85,15 @@
         %>
         <c:import url="topNav.jsp"/>
         <div class="container-fluid p-4">
-            <p><a class="link-secondary" href="dashboard.jsp"><b>Room & Suite Status</b></a> | <a class="link-secondary" href="./SalesReport">Sales Report</a></p>
+            <p>
+                <a class="link-secondary" href="dashboard.jsp">
+                    <b>Room & Suite Status</b>
+                </a> | 
+                <a class="link-secondary" href="./SalesReport">
+                    Sales Report
+                </a> | 
+                <a class="link-secondary" href="updateRoomType.jsp"> Update Room Type</a>
+            </p>
             <!-- guest room accordion -->
             <div class="accordion" id="guestAccordion">
                 <div class="accordion-item">
@@ -116,7 +124,11 @@
                                         }
                                 %>
                                 <tr>
-                                    <td style="width: 20%;"><%= guest.getRoom_number() %></td>
+                                    <td style="width: 20%;">
+                                        <a class="link-secondary" href="editRoom.jsp?roomID=<%= guest.getRoom_id() %>">
+                                            <%= guest.getRoom_number() %>
+                                        </a>
+                                    </td>
                                     <td style="width: 30%;">
                                         <% if (guest.getRoom_roomtype_id() == 1) { %>2 Twin (3 pax)<% } %>
                                         <% if (guest.getRoom_roomtype_id() == 2) { %>1 King (2 pax)<% } %>
@@ -176,7 +188,11 @@
                                         }
                                 %>
                                 <tr>
-                                    <td style="width: 20%;"><%= guest.getRoom_number() %></td>
+                                    <td style="width: 20%;">
+                                        <a class="link-secondary" href="editRoom.jsp?roomID=<%= guest.getRoom_id() %>">
+                                            <%= guest.getRoom_number() %>
+                                        </a>
+                                    </td>
                                     <td style="width: 30%;">
                                         <% if (guest.getRoom_roomtype_id() == 3) { %>2 Twin (3 pax)<% } %>
                                         <% if (guest.getRoom_roomtype_id() == 4) { %>1 King (3 pax)<% } %>
@@ -236,7 +252,11 @@
                                         }
                                 %>
                                 <tr>
-                                    <td style="width: 20%;"><%= guest.getRoom_number() %></td>
+                                    <td style="width: 20%;">
+                                        <a class="link-secondary" href="editRoom.jsp?roomID=<%= guest.getRoom_id() %>">
+                                            <%= guest.getRoom_number() %>
+                                        </a>
+                                    </td>
                                     <td style="width: 30%;">
                                         1 King (2 max)
                                     </td>

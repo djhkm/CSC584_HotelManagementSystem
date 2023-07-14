@@ -28,6 +28,10 @@
         <servlet-name>DeleteBookingServlet</servlet-name>
         <servlet-class>com.mvc.controller.DeleteBookingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RoomServlet</servlet-name>
+        <servlet-class>com.mvc.controller.RoomServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterCustomerServlet</servlet-name>
         <url-pattern>/RegisterCustomerServlet</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>DeleteBookingServlet</servlet-name>
         <url-pattern>/DeleteBookingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoomServlet</servlet-name>
+        <url-pattern>/RoomServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
