@@ -23,7 +23,15 @@
     <body>
         <c:import url="topNav.jsp"/>
         <div class="container-fluid p-4">
-            <p><a class="link-secondary" href="dashboard.jsp">Room & Suite Status</a> | <a class="link-secondary" href="./SalesReport"><b>Sales Report</b></a></p>
+            <p>
+                <a class="link-secondary" href="dashboard.jsp">
+                    Room & Suite Status
+                </a> | 
+                <a class="link-secondary" href="./SalesReport">
+                    <b>Sales Report</b>
+                </a> | 
+                <a class="link-secondary" href="updateRoomType.jsp"> Update Room Type</a>
+            </p>
             <table class="table table-striped table-hover text-center table-bordered">
                 <tr class="table-primary">
                     <th>Invoice No</th>
