@@ -13,7 +13,7 @@
            //System.out.println("before if");%>
         <c:if test="${param.SignUp == null}">
             <% //System.out.println("signup is null"); %>
-            <div class="col-2 p-3">
+            <div class="col-2 d-flex justify-content-end align-items-center">
                 <c:if test="${sessionScope.user == null}">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
                         LOGIN / SIGN UP
@@ -21,11 +21,17 @@
                 </c:if>
                 <c:if test="${sessionScope.user != null}">
                     <jsp:useBean id="user" class="com.mvc.bean.Users" scope="session"/>
+                    <c:if test="${user.user_type == '2'}">
+                        <a class="btn btn-sm btn-primary" href="booking.jsp">
+                            RESERVATION
+                        </a>
+                    </c:if>
+                    &emsp;
                     <div class="fs-5 mb-1 d-inline">
                         <c:out value="${user.username}"/>
                     </div>
                     &emsp;
-                    <a type="button" class="btn btn-sm btn-secondary d-inline" href="logout.do">
+                    <a class="btn btn-sm btn-secondary d-inline" href="logout.do">
                         LOG OUT
                     </a>
                 </c:if>

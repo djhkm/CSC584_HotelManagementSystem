@@ -28,7 +28,7 @@ public class RoomDAO {
     
     Connection conn = DBConnection.createConnection();
     
-    public Room getRoom(int roomid){
+    public Room getRoom(int roomid) {
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement("SELECT room_number, room_status, roomtype_id FROM room WHERE room_id = ?");
@@ -153,22 +153,37 @@ public class RoomDAO {
         return null;
     }
     
-    public int updateRoom(Room room){
+    public int updateRoom(Room room) {
+        List<Room> rooms = getAllRoom();
+        
         try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE room SET room_number = ?, roomtype_id = ? WHERE room_id = ?");
-            ps.setInt(1, room.getRoom_number());
-            ps.setInt(2, room.getRoom_roomtype_id());
-            ps.setInt(3, room.getRoom_id());
-            return ps.executeUpdate();
+            int takenFlag = 0;
+            
+            for (Room value : rooms) {
+                int checkRoomNumber = value.getRoom_number();
+                if (checkRoomNumber == room.getRoom_number()) {
+                    takenFlag = 1;
+                }
+            }
+            
+            if (takenFlag == 0) {
+                PreparedStatement ps = conn.prepareStatement("UPDATE room SET room_number = ?, roomtype_id = ? WHERE room_id = ?");
+                ps.setInt(1, room.getRoom_number());
+                ps.setInt(2, room.getRoom_roomtype_id());
+                ps.setInt(3, room.getRoom_id());
+                return ps.executeUpdate();
+            } else {
+                return -2;
+            }            
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
         return -1;
     }
     
-    public int deleteRoom(int roomid){
-        try {
+    public int deleteRoom(int roomid) {
+        
+        try {            
             PreparedStatement ps = conn.prepareStatement("DELETE FROM room WHERE room_id = ?");
             ps.setInt(1, roomid);
             return ps.executeUpdate();
@@ -177,5 +192,39 @@ public class RoomDAO {
         }
         
         return -1;
+    }
+    
+    public String addRoom(int roomNumber, int roomType) {
+        List<Room> rooms = getAllRoom();
+        
+        try {
+            int takenFlag = 0;
+            
+            for (Room room : rooms) {
+                int checkRoomNumber = room.getRoom_number();
+                if (checkRoomNumber == roomNumber) {
+                    takenFlag = 1;
+                }
+            }
+            
+            if (takenFlag == 0) {
+                PreparedStatement ps;
+            
+                String query = "INSERT INTO ROOM (ROOM_NUMBER, ROOM_STATUS, ROOMTYPE_ID) VALUES (?, 'Available', ?)";
+
+                ps = conn.prepareStatement(query);
+                ps.setInt(1, roomNumber);
+                ps.setInt(2, roomType);
+                ps.executeUpdate();
+                //conn.close();
+                return "Add room success";
+            }
+            else {
+                return "Room number taken";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Add room failed";
     }
 }

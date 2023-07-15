@@ -20,43 +20,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RoomServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,32 +39,56 @@ public class RoomServlet extends HttpServlet {
         Room room = new Room();
         RoomDAO dao = new RoomDAO();
         
-        int roomID = (Integer.parseInt(request.getParameter("roomID")));
-        room.setRoom_id(roomID);
+        int roomID = 0;
+        int roomNumber = 0;
+        int roomType = 0;
         
         switch(request.getParameter("operation")){
             case "Save": // from editRoom.jsp, "operation" is the submit button
+                roomID = (Integer.parseInt(request.getParameter("roomID")));
+                room.setRoom_id(roomID);
+        
                 room.setRoom_number(Integer.parseInt(request.getParameter("roomNumber")));
                 room.setRoom_roomtype_id(Integer.parseInt(request.getParameter("roomType")));
                 
-                System.out.println("updating room " + dao.updateRoom(room));
-                request.getRequestDispatcher("editRoom.jsp?roomID=" + room.getRoom_id()).forward(request, response);
+                //System.out.println("updating room " + dao.updateRoom(room));
+                int statusB = dao.updateRoom(room);
+                if (statusB == -1) { // if edit failed, go back to edit page
+                    request.getRequestDispatcher("editRoom.jsp?roomID=" + roomID).forward(request, response);
+                } else if (statusB == -2) { // if room number is same as existed
+                    request.setAttribute("errMessage", "Room number taken");
+                    request.getRequestDispatcher("editRoom.jsp?roomID=" + roomID).forward(request, response);
+                } else { // if edit success, go back to dashboard
+                    request.setAttribute("goHREF", roomID);
+                    request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+                }
                 break;
             case "Delete": // from editRoom.jsp, "operation" is the submit button
-                if(dao.deleteRoom(roomID) != -1){ // if delete success, go back to dashboard
+                roomID = (Integer.parseInt(request.getParameter("roomID")));
+                room.setRoom_id(roomID);
+                
+                if (dao.deleteRoom(roomID) != -1) { // if delete success, go back to dashboard
                     request.getRequestDispatcher("dashboard.jsp").forward(request, response);
-                }else{ // if delete failed, go back to edit page
+                } else { // if delete failed, go back to edit page
                     request.getRequestDispatcher("editRoom.jsp?roomID=" + roomID).forward(request, response);
                 }
                 break;
+            case "AddRoom":
+                roomNumber = Integer.parseInt(request.getParameter("room_number"));
+                roomType = Integer.parseInt(request.getParameter("room_type"));
+                
+                String statusA = dao.addRoom(roomNumber, roomType);
+                if (statusA.equals("Room number taken")) {
+                    request.setAttribute("errMessage", statusA);
+                } else if (statusA.equals("Add room failed")) {
+                    request.setAttribute("errMessage", statusA);
+                } else {
+                    request.setAttribute("goHREF", roomID);
+                }
+                request.getRequestDispatcher("dashboard.jsp").forward(request, response);
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

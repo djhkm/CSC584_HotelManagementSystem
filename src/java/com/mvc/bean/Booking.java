@@ -24,6 +24,7 @@ public class Booking {
     private String customerName;
     private int roomNumber;
     private String roomStatus;
+    private String roomType;
 
     public Booking() {
     }
@@ -68,7 +69,21 @@ public class Booking {
         this.booking_customer_id = booking_customer_id;
         this.booking_room_id = booking_room_id;
         this.roomStatus = roomStatus;
-    }    
+    }
+    
+    // used in DAO's getAllBookingWithCustomerId()
+    public Booking(int booking_id, String invoice_number, String booking_date, int booking_pax, int booking_dayofstay, String booking_checkindate, String booking_checkoutdate, double booking_totalfee, int roomNumber, String roomType) {
+        this.booking_id = booking_id;
+        this.invoice_number = invoice_number;
+        this.booking_date = booking_date;
+        this.booking_pax = booking_pax;
+        this.booking_dayofstay = booking_dayofstay;
+        this.booking_checkindate = booking_checkindate;
+        this.booking_checkoutdate = booking_checkoutdate;
+        this.booking_totalfee = booking_totalfee;
+        this.roomNumber = roomNumber;
+        this.roomType = roomType;
+    }
 
     public int getBooking_id() {
         return booking_id;
@@ -172,5 +187,13 @@ public class Booking {
 
     public void setRoomStatus(String roomStatus) {
         this.roomStatus = roomStatus;
+    }
+    
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
     }
 }

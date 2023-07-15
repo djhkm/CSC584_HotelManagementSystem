@@ -23,7 +23,7 @@
     <body>
         <c:import url="topNav.jsp"/>
         <div class="container-fluid p-4">
-            <p>
+            <p class="mb-4">
                 <a class="link-secondary" href="dashboard.jsp">
                     Room & Suite Status
                 </a> | 
@@ -55,7 +55,7 @@
                         <td>
                             <form action="DeleteBookingServlet" method="post">
                                 <input type="hidden" name="bookingID" value="<c:out value="${booking.getBooking_id()}"/>"/>
-                                <button class="btn btn-danger" onclick="confirm('Delete invoice <c:out value="${booking.getInvoice_number()}"/> data?')" type="submit">Delete</button>
+                                <button class="btn btn-danger" onclick="confirm('Delete invoice <c:out value="${booking.getInvoice_number()}"/> data?')" type="submit">Cancel Booking</button>
                             </form>
                         </td>
                     </tr>

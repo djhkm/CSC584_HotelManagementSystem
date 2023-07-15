@@ -207,4 +207,42 @@ public class BookingDAO {
         }
         return null;
     }
+    
+    public List<Booking> getAllBookingWithCustomerId(int customer_id) {
+        List<Booking> bookings = new ArrayList();
+        
+        try {
+            Statement s;
+            ResultSet rs;
+            
+            String query = "SELECT booking.*, room.ROOM_NUMBER, roomtype.ROOM_NAME FROM booking INNER JOIN room ON booking.ROOM_ID = room.ROOM_ID INNER JOIN roomtype ON room.ROOMTYPE_ID = roomtype.ROOMTYPE_ID INNER JOIN customer ON booking.CUSTOMER_ID = customer.CUSTOMER_ID WHERE customer.CUSTOMER_ID = " + customer_id + "";
+            
+            s = conn.createStatement();
+            rs = s.executeQuery(query);
+            
+            SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd / MM / yyyy");
+            
+            while (rs.next()) {
+                int booking_id = rs.getInt("BOOKING_ID");
+                String invoice_number = rs.getString("INVOICE_NUMBER");
+                String booking_date = formatter.format(parser.parse(rs.getString("BOOKING_DATE")));
+                int booking_pax = rs.getInt("BOOKING_PAX");
+                int booking_dayofstay = rs.getInt("BOOKING_DAYSOFSTAY");
+                String booking_checkindate = formatter.format(parser.parse(rs.getString("BOOKING_CHECKINDATE")));
+                String booking_checkoutdate = formatter.format(parser.parse(rs.getString("BOOKING_CHECKOUTDATE")));
+                double booking_totalfee = rs.getDouble("BOOKING_TOTALFEE");
+                int booking_room_number = rs.getInt("ROOM_NUMBER");
+                String booking_room_type = rs.getString("ROOM_NAME");
+                
+                Booking b = new Booking(booking_id, invoice_number, booking_date, booking_pax, booking_dayofstay, booking_checkindate, booking_checkoutdate, booking_totalfee, booking_room_number, booking_room_type);
+                bookings.add(b);
+            }
+            //conn.close();
+            return bookings;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

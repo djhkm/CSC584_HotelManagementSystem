@@ -3,7 +3,7 @@
     Created on : Jul 14, 2023, 11:13:20 AM
     Author     : haziq
 --%>
-
+<%@include file="checkSession.jsp" %>
 <%@page import="com.mvc.bean.RoomType"%>
 <%@page import="java.util.List"%>
 <%@page import="com.mvc.dao.RoomTypeDAO"%>
@@ -25,7 +25,7 @@
     <body>
         <c:import url="topNav.jsp"/>
         <div class="container-fluid p-4">
-            <p>
+            <p class="mb-4">
                 <a class="link-secondary" href="dashboard.jsp">
                     Room & Suite Status
                 </a> | 

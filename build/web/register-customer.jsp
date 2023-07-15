@@ -102,7 +102,7 @@
             <span style="font-size: 14px; color: red;">
                 <%= request.getAttribute("errMessage") %>
             </span>
-        <% } %>
+            <% } %>
         </div>
     </body>
 </html>

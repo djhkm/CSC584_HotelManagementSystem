@@ -3,7 +3,7 @@
     Created on : Jul 11, 2023, 3:11:49 PM
     Author     : haziq
 --%>
-
+<%@include file="checkSession.jsp" %>
 <%@page import="com.mvc.bean.RoomType"%>
 <%@page import="java.util.List"%>
 <%@page import="com.mvc.bean.Room"%>
@@ -46,52 +46,52 @@
                 </a> | 
                 <a class="link-secondary" href="updateRoomType.jsp"> Update Room Type</a>
             </p>
-            <p>Update Room</p>
-            <form action="./RoomServlet" method="post">
-                <input type="hidden" name="roomID" value="<%= roomid %>"/>
-                <table class="table">
-                    <tr>
-                        <td>Room Number:</td>
-                        <td>
-                            <input type="number" name="roomNumber" class="form-control" value="<%= room.getRoom_number() %>"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Room Type:</td>
-                        <td>
-                            <select name="roomType" class="form-select">
-                                <%
-                                for(RoomType rtRow : rtList){    
-                                %>
-                                <option value="<%= rtRow.getRoomtype_id() %>" <%= rtRow.getRoomtype_id() == rt.getRoomtype_id() ? "selected" : "" %>>
-                                    <%= rtRow.getRoom_name() %>
-                                </option>
-                                <%
-                                    }
-                                %>
-                            </select>
-                        </td>
-                    </tr>
-<!--                    <tr>
-                        <td>Room Number:</td>
-                        <td>
-                            <input type="number" class="form-control" value="<%= room.getRoom_number() %>"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Room Number:</td>
-                        <td>
-                            <input type="number" class="form-control" value="<%= room.getRoom_number() %>"/>
-                        </td>
-                    </tr>-->
-                </table>
-                <p class="text-center">
-                    <input type="submit" name="operation" class="btn btn-danger" value="Delete"/>
-                    <input type="reset" class="btn btn-secondary" value="Reset"/>
-                    <input type="submit" name="operation" class="btn btn-primary" value="Save"/>
-                </p>
-                
-            </form>
+        </div>
+        <div class="container p-4 pt-0">
+            <div class="row">
+                <div class="d-flex justify-content-center">
+                    <div class="col-6">
+                        <h3>Update Room</h3>
+                        <form action="./RoomServlet" method="post">
+                            <input type="hidden" name="roomID" value="<%= roomid %>"/>
+                            <table class="table">
+                                <tr>
+                                    <td>Room Number:</td>
+                                    <td>
+                                        <input type="number" name="roomNumber" class="form-control" value="<%= room.getRoom_number() %>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Room Type:</td>
+                                    <td>
+                                        <select name="roomType" class="form-select">
+                                            <%
+                                            for(RoomType rtRow : rtList){    
+                                            %>
+                                            <option value="<%= rtRow.getRoomtype_id() %>" <%= rtRow.getRoomtype_id() == rt.getRoomtype_id() ? "selected" : "" %>>
+                                                <%= rtRow.getRoom_name() %>
+                                            </option>
+                                            <%
+                                                }
+                                            %>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p class="text-center">
+                                <input type="submit" name="operation" class="btn btn-danger" value="Delete"/>
+                                <a class="btn btn-secondary ms-1 me-1" href="dashboard.jsp">Back</a>
+                                <input type="submit" name="operation" class="btn btn-primary" value="Save"/>
+                            </p>
+                        </form>
+                        <c:if test="${requestScope.errMessage != null}">
+                        <div class="container-fluid" style="color: red">
+                            <c:out value="${requestScope.errMessage}"/>
+                        </div>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

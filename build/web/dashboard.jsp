@@ -3,6 +3,7 @@
     Created on : Jul 9, 2023, 4:59:11 PM
     Author     : haziq
 --%>
+<%@include file="checkSession.jsp" %>
 <%@page import="com.mvc.dao.RoomTypeDAO"%>
 <%@page import="com.mvc.bean.RoomType"%>
 <%@page import="java.time.ZoneId"%>
@@ -11,7 +12,6 @@
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.mvc.dao.BookingDAO"%>
 <%@page import="com.mvc.bean.Booking"%>
-<%@include file="checkSession.jsp" %>
 <%@page import="java.util.LinkedList"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.mvc.bean.Room"%>
@@ -47,6 +47,8 @@
                 border: 2px maroon solid; 
             }
         </style>
+        <!-- jQuery import -->
+        <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
     </head>
     <body>
         <%
@@ -70,9 +72,9 @@
         }
         
         // set as request attribute to make it available for jstl
-//        request.setAttribute("guestRooms", guestRooms);
-        request.setAttribute("executiveRooms", executiveRooms);
-        request.setAttribute("presidentialRooms", presidentialRooms);
+        //request.setAttribute("guestRooms", guestRooms);
+        //request.setAttribute("executiveRooms", executiveRooms);
+        //request.setAttribute("presidentialRooms", presidentialRooms);
         
         LocalDate date = LocalDate.now();
         Date today_date = Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
@@ -93,7 +95,7 @@
         <div class="container-fluid p-4">
             <div class="d-flex justify-content-between mb-3">
                 <div>
-                    <p><a class="link-secondary" href="dashboard.jsp"><b>Room & Suite Status</b></a> | <a class="link-secondary" href="./SalesReport">Sales Report</a></p>
+                    <p><a class="link-secondary" href="dashboard.jsp"><b>Room & Suite Status</b></a> | <a class="link-secondary" href="./SalesReport">Sales Report</a> | <a class="link-secondary" href="updateRoomType.jsp"> Update Room Type</a></p>
                 </div>
                 <div>
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRoom">Add Room</button>
@@ -101,7 +103,8 @@
             </div>
             <div class="modal fade" id="addRoom" tabindex="-1" aria-labelledby="addRoomLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <form action="LoginServlet" method="POST">
+                    <form action="RoomServlet" method="POST">
+                        <input type="hidden" name="operation" value="AddRoom">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title">Add Room</h4>
@@ -110,7 +113,7 @@
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="roomNumber" class="form-label">Room Number</label>
-                                    <input type="text" name="room_number" class="form-control" id="roomNumber">
+                                    <input type="number" name="room_number" class="form-control" id="roomNumber" min="100" max="999" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="roomType" class="form-label">Room Type</label>
@@ -122,6 +125,11 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <c:if test="${requestScope.errMessage != null}">
+                                <div class="container-fluid" style="color: red">
+                                    <c:out value="${requestScope.errMessage}"/>
+                                </div>
+                                </c:if>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Add</button>
                             </div>
@@ -129,15 +137,6 @@
                     </form>
                 </div>
             </div>
-            <p>
-                <a class="link-secondary" href="dashboard.jsp">
-                    <b>Room & Suite Status</b>
-                </a> | 
-                <a class="link-secondary" href="./SalesReport">
-                    Sales Report
-                </a> | 
-                <a class="link-secondary" href="updateRoomType.jsp"> Update Room Type</a>
-            </p>
             <!-- guest room accordion -->
             <div class="accordion" id="guestAccordion">
                 <div class="accordion-item">
@@ -338,9 +337,16 @@
                 </div>
             </div>
         </div>
-        <c:if test="${requestScope.editHREF != null}">
+        <c:if test="${requestScope.goHREF != null}">
         <script>
-            window.location.href = "dashboard.jsp#<c:out value="${requestScope.editHREF}"/>";
+            window.location.href = "dashboard.jsp#<c:out value="${requestScope.goHREF}"/>";
+        </script>
+        </c:if>
+        <c:if test="${requestScope.errMessage != null}">
+        <script>
+            $(document).ready(function () {
+                $('#addRoom').modal('show');
+            });
         </script>
         </c:if>
     </body>
